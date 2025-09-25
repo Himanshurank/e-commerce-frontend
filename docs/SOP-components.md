@@ -3,12 +3,12 @@ Component Implementation Pattern
 1. Import Dependencies
 
    ```tsx
-   import React, { useState, useEffect } from 'react';
-   import Typography from '@/sharedComponents/typography/typography';
-   import Button from '@/shared/components/button/button';
-   import { IComponentProps } from './component.interface';
-   import { helperFunction } from '@/shared/utilities/common';
-   import IconImage from '@/publicImages/icon.svg';
+   import React, { useState, useEffect } from "react";
+   import Typography from "@/sharedComponents/typography/typography";
+   import Button from "@/shared/components/button/button";
+   import { IComponentProps } from "./component.interface";
+   import { helperFunction } from "@/shared/utilities/common";
+   import IconImage from "@/publicImages/icon.svg";
    ```
 
 2. Define Interfaces and Types
@@ -19,7 +19,6 @@ Component Implementation Pattern
      description?: string;
      onClick?: (id: string) => void;
      className?: string;
-     testId?: string;
    }
    ```
 
@@ -27,7 +26,7 @@ Component Implementation Pattern
 
    ```tsx
    const ComponentName = (props: IProps) => {
-     const { title, description, onClick, className = '', testId } = props;
+     const { title, description, onClick, className  } = props;
 
      // Component implementation
    ```
@@ -80,7 +79,6 @@ Component Implementation Pattern
    return (
      <div
        className={`flex flex-col bg-at-white rounded-xl ${className}`}
-       data-testid={testId || 'component-name'}
        onClick={handleClick}
      >
        {renderSectionName()}
@@ -133,5 +131,4 @@ Component Implementation Pattern
 
 ### Testing
 
-- Add data-testid attributes to elements
 - Create testable component logic

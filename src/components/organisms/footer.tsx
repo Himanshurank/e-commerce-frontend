@@ -2,44 +2,14 @@ import React from "react";
 import Typography from "@/components/atoms/typography";
 import NavigationLink from "@/components/molecules/navigation-link";
 import Logo from "@/components/molecules/logo";
+import { FOOTER_SECTIONS } from "@/shared/constants";
 
 interface IFooterProps {
   className?: string;
-  testId?: string;
 }
 
 const Footer = (props: IFooterProps) => {
-  const { className = "", testId } = props;
-
-  const footerSections = [
-    {
-      title: "Quick Links",
-      links: [
-        { href: "/about", label: "About Us" },
-        { href: "/contact", label: "Contact" },
-        { href: "/help", label: "Help Center" },
-        { href: "/terms", label: "Terms of Service" },
-      ],
-    },
-    {
-      title: "For Sellers",
-      links: [
-        { href: "/sell", label: "Start Selling" },
-        { href: "/seller-center", label: "Seller Center" },
-        { href: "/seller-guide", label: "Seller Guide" },
-        { href: "/commission-rates", label: "Commission Rates" },
-      ],
-    },
-    {
-      title: "Customer Service",
-      links: [
-        { href: "/track-order", label: "Order Tracking" },
-        { href: "/returns", label: "Returns & Refunds" },
-        { href: "/shipping", label: "Shipping Info" },
-        { href: "/payment-methods", label: "Payment Methods" },
-      ],
-    },
-  ];
+  const { className } = props;
 
   const renderCompanyInfo = () => {
     return (
@@ -64,7 +34,7 @@ const Footer = (props: IFooterProps) => {
     );
   };
 
-  const renderFooterSection = (section: (typeof footerSections)[0]) => {
+  const renderFooterSection = (section: (typeof FOOTER_SECTIONS)[0]) => {
     return (
       <div key={section.title}>
         <Typography variant="body" className="text-white font-semibold mb-4">
@@ -97,17 +67,14 @@ const Footer = (props: IFooterProps) => {
   };
 
   return (
-    <footer
-      className={`bg-gray-900 text-white py-12 ${className}`}
-      data-testid={testId || "footer"}
-    >
+    <footer className={`bg-gray-900 text-white py-12 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           {renderCompanyInfo()}
 
           {/* Footer Sections */}
-          {footerSections.map(renderFooterSection)}
+          {FOOTER_SECTIONS.map(renderFooterSection)}
         </div>
 
         {/* Copyright */}
