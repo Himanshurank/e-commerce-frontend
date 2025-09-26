@@ -14,7 +14,7 @@ const Label = (props: ILabelProps) => {
   return (
     <label
       htmlFor={htmlFor}
-      className={`block text-sm font-medium text-gray-700 ${className}`}
+      className={`block text-sm font-semibold text-neutral-700 mb-2 ${className}`}
       data-testid={testId || "label"}
     >
       {children}

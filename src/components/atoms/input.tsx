@@ -84,7 +84,7 @@ const Input = (props: IInputProps) => {
     ? "bg-neutral-50 cursor-not-allowed"
     : "bg-white";
   const widthClasses = fullWidth ? "w-full" : "";
-  const iconPadding = icon ? "pl-10" : "";
+  const iconPadding = icon ? "pl-12" : "";
 
   return (
     <div className={fullWidth ? "w-full" : ""}>

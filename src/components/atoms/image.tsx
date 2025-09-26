@@ -33,11 +33,12 @@ const Image = (props: IImageProps) => {
   const imageProps = {
     src,
     alt,
-    className: `${objectFit === "cover" ? "object-cover" : `object-${objectFit}`} ${className}`,
+    className: `${objectFit === "cover" ? "object-cover" : `object-${objectFit}`} transition-all duration-300 ${className}`,
     "data-testid": testId || "image",
     priority,
     placeholder,
     sizes,
+    quality: 90,
     ...(fill ? { fill: true } : { width, height }),
   };
 

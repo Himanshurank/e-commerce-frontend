@@ -288,34 +288,36 @@ This Standard Operating Procedure (SOP) serves as the definitive reference for A
 
 | Purpose    | Primary | Secondary | Success | Warning | Error   |
 | ---------- | ------- | --------- | ------- | ------- | ------- |
-| Background | #FFFFFF | #F8F9FA   | #E8F5E8 | #FFF3CD | #F8D7DA |
-| Text       | #212529 | #6C757D   | #155724 | #856404 | #721C24 |
-| Border     | #DEE2E6 | #CED4DA   | #C3E6CB | #FFEAA7 | #F5C6CB |
-| Action     | #007BFF | #6C757D   | #28A745 | #FFC107 | #DC3545 |
+| Background | #ffffff | #f8fafc   | #E8F5E8 | #FFF3CD | #F8D7DA |
+| Text       | #0f172a | #475569   | #155724 | #856404 | #721C24 |
+| Border     | #e2e8f0 | #cbd5e1   | #C3E6CB | #FFEAA7 | #F5C6CB |
+| Action     | #9333ea | #0ea5e9   | #28A745 | #FFC107 | #DC3545 |
 
-### Modern Gradient Color System
+### Modern Brand Color System
 
-| Purpose          | Gradient Classes                             | Hex Values                  |
-| ---------------- | -------------------------------------------- | --------------------------- |
-| Primary Gradient | `from-cyan-500 to-purple-600`                | #06B6D4 → #9333EA           |
-| Primary Hover    | `from-cyan-400 to-purple-500`                | #22D3EE → #A855F7           |
-| Text Gradient    | `from-cyan-400 via-purple-400 to-pink-400`   | #22D3EE → #C084FC → #F472B6 |
-| Background Dark  | `from-slate-900 via-purple-900 to-slate-900` | #0F172A → #581C87 → #0F172A |
-| Accent Cyan      | `text-cyan-400`                              | #22D3EE                     |
-| Accent Purple    | `text-purple-400`                            | #C084FC                     |
-| Accent Pink      | `text-pink-400`                              | #F472B6                     |
+| Purpose             | Brand Classes      | Hex Values | Usage                 |
+| ------------------- | ------------------ | ---------- | --------------------- |
+| Primary Brand       | `bg-brand-600`     | #9333ea    | Primary buttons, CTAs |
+| Primary Brand Hover | `bg-brand-700`     | #7c3aed    | Hover states          |
+| Primary Brand Light | `bg-brand-500`     | #a855f7    | Secondary elements    |
+| Accent Light        | `bg-accent-500`    | #0ea5e9    | Highlights, links     |
+| Accent Dark         | `bg-accent-600`    | #0284c7    | Active states         |
+| Text Primary        | `text-neutral-900` | #0f172a    | Main content text     |
+| Text Secondary      | `text-neutral-700` | #334155    | Supporting text       |
+| Text Muted          | `text-neutral-600` | #475569    | Captions, labels      |
 
-### Dark Theme Color Application
+### Light Theme Color Application
 
-| Purpose          | Light Mode | Dark Mode            | Usage                   |
-| ---------------- | ---------- | -------------------- | ----------------------- |
-| Background       | #FFFFFF    | #0F172A (slate-900)  | Main background         |
-| Surface          | #F8F9FA    | #1E293B (slate-800)  | Card backgrounds        |
-| Primary Text     | #212529    | #F1F5F9 (slate-100)  | Main content text       |
-| Secondary Text   | #6C757D    | #CBD5E1 (slate-300)  | Supporting text         |
-| Accent Primary   | #22D3EE    | #22D3EE (cyan-400)   | Interactive elements    |
-| Accent Secondary | #C084FC    | #C084FC (purple-400) | Highlights and emphasis |
-| Accent Tertiary  | #F472B6    | #F472B6 (pink-400)   | Special highlights      |
+| Purpose        | Light Mode            | Classes            | Usage                 |
+| -------------- | --------------------- | ------------------ | --------------------- |
+| Background     | #f8fafc (neutral-50)  | `bg-neutral-50`    | Main background       |
+| Surface        | #ffffff               | `bg-white`         | Card backgrounds      |
+| Primary Text   | #0f172a (neutral-900) | `text-neutral-900` | Main content text     |
+| Secondary Text | #334155 (neutral-700) | `text-neutral-700` | Supporting text       |
+| Muted Text     | #475569 (neutral-600) | `text-neutral-600` | Captions, labels      |
+| Brand Primary  | #9333ea (brand-600)   | `bg-brand-600`     | Primary buttons, CTAs |
+| Brand Hover    | #7c3aed (brand-700)   | `bg-brand-700`     | Hover states          |
+| Accent Primary | #0ea5e9 (accent-500)  | `bg-accent-500`    | Highlights, links     |
 
 ### Spacing System (8px Grid)
 
@@ -496,7 +498,6 @@ This Standard Operating Procedure (SOP) serves as the definitive reference for A
 ### Step 1: Requirements Analysis
 
 1. **Understand the Project**:
-
    - What is the primary user goal?
    - What are the business objectives?
    - What are the technical constraints?
@@ -510,13 +511,11 @@ This Standard Operating Procedure (SOP) serves as the definitive reference for A
 ### Step 2: Design Creation
 
 1. **Start with Structure**:
-
    - Apply Information Architecture principles
    - Use Mobile-First approach
    - Establish clear hierarchy
 
 2. **Add Visual Design**:
-
    - Apply UI Consistency principles
    - Implement proper contrast and typography
    - Ensure accessibility compliance
@@ -529,7 +528,6 @@ This Standard Operating Procedure (SOP) serves as the definitive reference for A
 ### Step 3: Validation and Iteration
 
 1. **Principle Compliance Check**:
-
    - Review against all applicable principles
    - Verify accessibility standards
    - Test performance implications
@@ -542,7 +540,6 @@ This Standard Operating Procedure (SOP) serves as the definitive reference for A
 ### Step 4: Documentation and Handoff
 
 1. **Design Specifications**:
-
    - Document design decisions and rationale
    - Provide implementation guidelines
    - Include accessibility requirements
