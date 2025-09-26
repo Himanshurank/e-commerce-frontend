@@ -291,17 +291,17 @@ This Standard Operating Procedure (SOP) serves as the definitive reference for A
 | Background | #ffffff | #f8fafc   | #E8F5E8 | #FFF3CD | #F8D7DA |
 | Text       | #0f172a | #475569   | #155724 | #856404 | #721C24 |
 | Border     | #e2e8f0 | #cbd5e1   | #C3E6CB | #FFEAA7 | #F5C6CB |
-| Action     | #9333ea | #0ea5e9   | #28A745 | #FFC107 | #DC3545 |
+| Action     | #6b21a8 | #a855f7   | #28A745 | #FFC107 | #DC3545 |
 
 ### Modern Brand Color System
 
 | Purpose             | Brand Classes      | Hex Values | Usage                 |
 | ------------------- | ------------------ | ---------- | --------------------- |
-| Primary Brand       | `bg-brand-600`     | #9333ea    | Primary buttons, CTAs |
-| Primary Brand Hover | `bg-brand-700`     | #7c3aed    | Hover states          |
-| Primary Brand Light | `bg-brand-500`     | #a855f7    | Secondary elements    |
-| Accent Light        | `bg-accent-500`    | #0ea5e9    | Highlights, links     |
-| Accent Dark         | `bg-accent-600`    | #0284c7    | Active states         |
+| Primary Brand       | `bg-brand-600`     | #6b21a8    | Primary buttons, CTAs |
+| Primary Brand Hover | `bg-brand-700`     | #581c87    | Hover states          |
+| Primary Brand Light | `bg-brand-500`     | #7c3aed    | Secondary elements    |
+| Accent Light        | `bg-accent-500`    | #a855f7    | Highlights, links     |
+| Accent Dark         | `bg-accent-600`    | #9333ea    | Active states         |
 | Text Primary        | `text-neutral-900` | #0f172a    | Main content text     |
 | Text Secondary      | `text-neutral-700` | #334155    | Supporting text       |
 | Text Muted          | `text-neutral-600` | #475569    | Captions, labels      |
@@ -315,9 +315,9 @@ This Standard Operating Procedure (SOP) serves as the definitive reference for A
 | Primary Text   | #0f172a (neutral-900) | `text-neutral-900` | Main content text     |
 | Secondary Text | #334155 (neutral-700) | `text-neutral-700` | Supporting text       |
 | Muted Text     | #475569 (neutral-600) | `text-neutral-600` | Captions, labels      |
-| Brand Primary  | #9333ea (brand-600)   | `bg-brand-600`     | Primary buttons, CTAs |
-| Brand Hover    | #7c3aed (brand-700)   | `bg-brand-700`     | Hover states          |
-| Accent Primary | #0ea5e9 (accent-500)  | `bg-accent-500`    | Highlights, links     |
+| Brand Primary  | #6b21a8 (brand-600)   | `bg-brand-600`     | Primary buttons, CTAs |
+| Brand Hover    | #581c87 (brand-700)   | `bg-brand-700`     | Hover states          |
+| Accent Primary | #a855f7 (accent-500)  | `bg-accent-500`    | Highlights, links     |
 
 ### Spacing System (8px Grid)
 
