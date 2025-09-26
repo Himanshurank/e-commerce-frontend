@@ -27,3 +27,31 @@ export const FOOTER_SECTIONS = [
     ],
   },
 ];
+
+// UI Constants - Shared across multiple components/pages
+export const UI_CONSTANTS = {
+  BREAKPOINTS: {
+    mobile: 320,
+    tablet: 768,
+    desktop: 1024,
+  },
+  SPACING: {
+    header: {
+      height: "5rem", // 80px (h-20)
+      heightCalc: "calc(100vh - 5rem)",
+    },
+  },
+} as const;
+
+// Animation Constants - Shared across components
+export const ANIMATION_CONSTANTS = {
+  TRANSITIONS: {
+    default: "transition-all duration-300",
+    colors: "transition-colors duration-300",
+    slow: "transition-all duration-500",
+  },
+  BLUR: {
+    background: "blur-3xl",
+    glass: "backdrop-blur-sm",
+  },
+} as const;

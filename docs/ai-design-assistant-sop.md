@@ -293,6 +293,30 @@ This Standard Operating Procedure (SOP) serves as the definitive reference for A
 | Border     | #DEE2E6 | #CED4DA   | #C3E6CB | #FFEAA7 | #F5C6CB |
 | Action     | #007BFF | #6C757D   | #28A745 | #FFC107 | #DC3545 |
 
+### Modern Gradient Color System
+
+| Purpose          | Gradient Classes                             | Hex Values                  |
+| ---------------- | -------------------------------------------- | --------------------------- |
+| Primary Gradient | `from-cyan-500 to-purple-600`                | #06B6D4 → #9333EA           |
+| Primary Hover    | `from-cyan-400 to-purple-500`                | #22D3EE → #A855F7           |
+| Text Gradient    | `from-cyan-400 via-purple-400 to-pink-400`   | #22D3EE → #C084FC → #F472B6 |
+| Background Dark  | `from-slate-900 via-purple-900 to-slate-900` | #0F172A → #581C87 → #0F172A |
+| Accent Cyan      | `text-cyan-400`                              | #22D3EE                     |
+| Accent Purple    | `text-purple-400`                            | #C084FC                     |
+| Accent Pink      | `text-pink-400`                              | #F472B6                     |
+
+### Dark Theme Color Application
+
+| Purpose          | Light Mode | Dark Mode            | Usage                   |
+| ---------------- | ---------- | -------------------- | ----------------------- |
+| Background       | #FFFFFF    | #0F172A (slate-900)  | Main background         |
+| Surface          | #F8F9FA    | #1E293B (slate-800)  | Card backgrounds        |
+| Primary Text     | #212529    | #F1F5F9 (slate-100)  | Main content text       |
+| Secondary Text   | #6C757D    | #CBD5E1 (slate-300)  | Supporting text         |
+| Accent Primary   | #22D3EE    | #22D3EE (cyan-400)   | Interactive elements    |
+| Accent Secondary | #C084FC    | #C084FC (purple-400) | Highlights and emphasis |
+| Accent Tertiary  | #F472B6    | #F472B6 (pink-400)   | Special highlights      |
+
 ### Spacing System (8px Grid)
 
 | Size | Value | Usage                 |

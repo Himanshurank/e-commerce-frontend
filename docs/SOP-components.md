@@ -186,6 +186,26 @@ import { formatPrice, validateEmail } from "@/shared/utils";
 | **Single Page**      | Page-specific only      | `@/core/modules/homepage/constants.ts`        | Homepage mock data       |
 | **Multiple Pages**   | Project-wide shared     | `@/shared/constants.ts`                       | API endpoints, UI colors |
 
+### Constants Management Rule
+
+**MANDATORY**: All hardcoded values in components MUST be extracted to appropriate constants files:
+
+1. **Page-Specific Constants** → `@/core/modules/[page]/constants.ts`
+
+   - Content text, stats, configuration specific to one page
+   - Example: Hero section content, homepage stats, page-specific mock data
+
+2. **Shared Constants** → `@/shared/constants.ts`
+
+   - UI colors, gradients, spacing, animations used across multiple components
+   - Global configuration, API endpoints, common styling values
+   - Example: Color gradients, transition classes, breakpoints, header height
+
+3. **Component Implementation**:
+   - Import constants at the top of component files
+   - Use constants instead of hardcoded strings/values
+   - Apply constants to className templates and content rendering
+
 ### Constants Structure
 
 ```tsx

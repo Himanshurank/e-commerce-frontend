@@ -143,3 +143,78 @@ export const MOCK_PRODUCTS = [
     inStock: true,
   },
 ];
+
+// Hero Section Constants
+export const HERO_STATS = [
+  {
+    value: "200M+",
+    label: "Products",
+    iconType: "package",
+    color: "text-brand-600",
+  },
+  {
+    value: "40M+",
+    label: "Suppliers",
+    iconType: "building",
+    color: "text-accent-600",
+  },
+  {
+    value: "190+",
+    label: "Countries",
+    iconType: "globe",
+    color: "text-brand-500",
+  },
+] as const;
+
+export const HERO_CONTENT = {
+  BADGE: {
+    text: "Trusted Global Platform",
+    iconType: "star",
+  },
+  HEADING: {
+    main: "Connect, Trade & Grow Your Business",
+    highlight: "Globally",
+  },
+  DESCRIPTION:
+    "Discover millions of quality products from verified suppliers worldwide. Experience seamless B2B trading with advanced tools, secure payments, and comprehensive support.",
+  SEARCH_PLACEHOLDER: "Search products, suppliers, or categories...",
+  CTA_BUTTONS: {
+    primary: "Start Exploring",
+    secondary: "Join as Supplier",
+  },
+} as const;
+
+export const HERO_VALUE_PROPS = [
+  {
+    id: 1,
+    title: "Global Marketplace",
+    description:
+      "Access millions of products from verified suppliers across 190+ countries with real-time inventory.",
+    iconType: "world",
+    gradient: "from-brand-500 to-brand-600",
+  },
+  {
+    id: 2,
+    title: "Secure Trading",
+    description:
+      "Trade with confidence using our secure payment system, quality assurance, and buyer protection.",
+    iconType: "shield",
+    gradient: "from-accent-500 to-accent-600",
+  },
+  {
+    id: 3,
+    title: "Smart Solutions",
+    description:
+      "Streamline your sourcing with AI-powered recommendations, bulk ordering, and logistics support.",
+    iconType: "lightning",
+    gradient: "from-brand-600 to-brand-700",
+  },
+  {
+    id: 4,
+    title: "Expert Support",
+    description:
+      "Get dedicated account management, trade consulting, and 24/7 customer support for your business.",
+    iconType: "users",
+    gradient: "from-accent-400 to-accent-500",
+  },
+] as const;
