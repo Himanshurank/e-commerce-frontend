@@ -55,7 +55,7 @@ const Input = (props: IInputProps) => {
     if (!label) return null;
 
     return (
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="block text-sm font-semibold text-neutral-700 mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
@@ -73,15 +73,15 @@ const Input = (props: IInputProps) => {
   };
 
   const baseClasses =
-    "block px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-colors duration-150";
-  const sizeClasses = "h-10 text-base";
+    "block px-4 py-3 border rounded-xl shadow-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200";
+  const sizeClasses = "h-12 text-base";
   const stateClasses = error
-    ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+    ? "border-red-300 focus:border-red-500 focus:ring-red-200"
     : isFocused
-    ? "border-blue-500 focus:border-blue-500 focus:ring-blue-500"
-    : "border-gray-300 focus:border-blue-500 focus:ring-blue-500";
+      ? "border-brand-400 focus:border-brand-500 focus:ring-brand-200"
+      : "border-neutral-300 focus:border-brand-500 focus:ring-brand-200";
   const disabledClasses = disabled
-    ? "bg-gray-50 cursor-not-allowed"
+    ? "bg-neutral-50 cursor-not-allowed"
     : "bg-white";
   const widthClasses = fullWidth ? "w-full" : "";
   const iconPadding = icon ? "pl-10" : "";
@@ -91,8 +91,8 @@ const Input = (props: IInputProps) => {
       {renderLabel()}
       <div className="relative">
         {icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <div className="text-gray-400">{icon}</div>
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <div className="text-neutral-400">{icon}</div>
           </div>
         )}
         <input

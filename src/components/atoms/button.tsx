@@ -30,22 +30,22 @@ const Button = (props: IButtonProps) => {
   const getVariantClasses = (variant: string): string => {
     const variants = {
       primary:
-        "bg-blue-600 hover:bg-blue-700 text-white border-transparent focus:ring-blue-500",
+        "bg-brand-600 hover:bg-brand-700 text-white border-transparent focus:ring-brand-200 shadow-lg hover:shadow-xl",
       secondary:
-        "bg-gray-600 hover:bg-gray-700 text-white border-transparent focus:ring-gray-500",
+        "bg-white hover:bg-neutral-50 text-brand-600 border-2 border-brand-200 hover:border-brand-300 focus:ring-brand-200 shadow-md hover:shadow-lg",
       outline:
-        "bg-transparent hover:bg-blue-50 text-blue-600 border-blue-600 focus:ring-blue-500",
+        "bg-transparent hover:bg-brand-50 text-brand-600 border-2 border-brand-300 hover:border-brand-400 focus:ring-brand-200",
       ghost:
-        "bg-transparent hover:bg-gray-100 text-gray-700 border-transparent focus:ring-gray-500",
+        "bg-transparent hover:bg-neutral-100 text-neutral-700 border-transparent focus:ring-neutral-200",
     };
     return variants[variant as keyof typeof variants] || variants.primary;
   };
 
   const getSizeClasses = (size: string): string => {
     const sizes = {
-      sm: "px-3 py-1.5 text-sm h-8",
-      md: "px-4 py-2 text-base h-10 md:h-10",
-      lg: "px-6 py-3 text-lg h-12",
+      sm: "px-4 py-2 text-sm h-9 rounded-lg",
+      md: "px-6 py-3 text-base h-11 rounded-xl",
+      lg: "px-8 py-4 text-lg h-14 rounded-xl",
     };
     return sizes[size as keyof typeof sizes] || sizes.md;
   };

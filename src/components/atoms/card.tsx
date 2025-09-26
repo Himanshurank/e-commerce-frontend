@@ -35,9 +35,10 @@ const Card = (props: ICardProps) => {
     }
   };
 
-  const baseClasses = "bg-white rounded-lg border border-gray-200 shadow-sm";
+  const baseClasses =
+    "bg-white rounded-2xl border border-neutral-200 shadow-lg";
   const hoverClasses = hover
-    ? "hover:shadow-md transition-shadow duration-200 cursor-pointer"
+    ? "hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
     : "";
   const paddingClasses = getPaddingClasses(padding);
   const interactiveClasses = onClick ? "cursor-pointer" : "";

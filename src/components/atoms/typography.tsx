@@ -13,12 +13,12 @@ const Typography = (props: ITypographyProps) => {
 
   const getVariantClasses = (variant: string): string => {
     const variants = {
-      h1: "text-3xl md:text-5xl font-bold text-gray-900",
-      h2: "text-2xl md:text-4xl font-semibold text-gray-900",
-      h3: "text-xl md:text-2xl font-semibold text-gray-900",
-      body: "text-base font-normal text-gray-700",
-      caption: "text-sm font-normal text-gray-600",
-      base: "text-base font-normal text-gray-900",
+      h1: "text-4xl md:text-6xl font-black text-neutral-900 leading-tight",
+      h2: "text-3xl md:text-5xl font-bold text-neutral-900 leading-tight",
+      h3: "text-2xl md:text-3xl font-bold text-neutral-900 leading-snug",
+      body: "text-base font-normal text-neutral-700 leading-relaxed",
+      caption: "text-sm font-medium text-neutral-600",
+      base: "text-base font-normal text-neutral-900",
     };
     return variants[variant as keyof typeof variants] || variants.body;
   };

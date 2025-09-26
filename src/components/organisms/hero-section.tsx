@@ -252,10 +252,13 @@ const HeroSection = (props: IHeroSectionProps) => {
           />
           <Button
             onClick={handleSearch}
-            className="m-2 px-8 py-4 bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-600 hover:to-accent-600 text-white font-bold rounded-xl shadow-glow transition-all duration-300 transform hover:scale-105"
+            className="m-2 px-10 py-4 bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0 focus:ring-4 focus:ring-brand-200"
             variant="primary"
           >
-            Search
+            <div className="flex items-center gap-2">
+              {renderIcon("search", "w-5 h-5")}
+              Search
+            </div>
           </Button>
         </div>
       </div>
