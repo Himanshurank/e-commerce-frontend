@@ -60,12 +60,10 @@ const SearchBox = (props: ISearchBoxProps) => {
     animate: {
       scale: 1,
       opacity: 1,
-      transition: { type: "spring", stiffness: 300, damping: 20 },
     },
     exit: {
       scale: 0,
       opacity: 0,
-      transition: { duration: 0.2 },
     },
     hover: { scale: 1.05, rotate: 5 },
     tap: { scale: 0.95 },
@@ -77,13 +75,11 @@ const SearchBox = (props: ISearchBoxProps) => {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 200, damping: 20 },
     },
     exit: {
       opacity: 0,
       y: -10,
       scale: 0.95,
-      transition: { duration: 0.2 },
     },
   };
 
@@ -91,7 +87,6 @@ const SearchBox = (props: ISearchBoxProps) => {
     focus: {
       scale: 1.1,
       rotate: [0, -10, 10, 0],
-      transition: { duration: 0.4 },
     },
   };
 

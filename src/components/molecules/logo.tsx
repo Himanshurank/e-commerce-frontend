@@ -25,11 +25,9 @@ const Logo = (props: ILogoProps) => {
     animate: {
       rotate: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 200, damping: 15 },
     },
     hover: {
       rotate: [0, -5, 5, 0],
-      transition: { duration: 0.5, ease: "easeInOut" },
     },
   };
 
@@ -62,6 +60,7 @@ const Logo = (props: ILogoProps) => {
         className="relative w-12 h-12 bg-brand-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg overflow-hidden"
         variants={iconVariants}
         whileHover="hover"
+        transition={{ type: "spring", stiffness: 200, damping: 15 }}
       >
         {/* Background pulse effect */}
         <motion.div

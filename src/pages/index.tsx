@@ -4,10 +4,6 @@ import HomePage from "@/components/templates/home-page";
 import { getServerHttpService } from "@/core/shared/factories/http-service.factory";
 import { IHomePageProps } from "@/core/modules/homepage/types";
 
-export default function Home(props: IHomePageProps) {
-  return <HomePage {...props} />;
-}
-
 export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
   context
 ) => {
@@ -79,3 +75,7 @@ export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
     };
   }
 };
+
+export default function Home(props: IHomePageProps) {
+  return <HomePage {...props} />;
+}

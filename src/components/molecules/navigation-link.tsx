@@ -33,7 +33,6 @@ const NavigationLink = (props: INavigationLinkProps) => {
     hover: {
       scaleX: 1,
       opacity: 0.1,
-      transition: { duration: 0.3, ease: "easeOut" },
     },
   };
 
@@ -42,14 +41,12 @@ const NavigationLink = (props: INavigationLinkProps) => {
     animate: {
       scaleX: 1,
       opacity: 1,
-      transition: { type: "spring", stiffness: 300, damping: 30 },
     },
   };
 
   const textVariants = {
     hover: {
       color: "#6b21a8",
-      transition: { duration: 0.2 },
     },
   };
 
@@ -83,9 +80,8 @@ const NavigationLink = (props: INavigationLinkProps) => {
         whileTap={{
           scale: 1,
           opacity: 0.3,
-          transition: { duration: 0.2 },
         }}
-        style={{ originX: 0.5, originY: 0.5 }}
+        style={{ transformOrigin: "center" }}
       />
 
       {/* Text content */}
@@ -123,7 +119,7 @@ const NavigationLink = (props: INavigationLinkProps) => {
           animate={{
             scale: 1,
             opacity: 0.05,
-            transition: { duration: 0.4 },
+            
           }}
         />
       )}

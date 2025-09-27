@@ -11,7 +11,7 @@ interface IProduct {
   id: string;
   name: string;
   price: number;
-  originalPrice?: number;
+  originalPrice?: number | null;
   image: string;
   rating: number;
   reviewCount: number;

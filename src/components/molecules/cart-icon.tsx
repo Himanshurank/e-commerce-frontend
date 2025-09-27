@@ -34,16 +34,13 @@ const CartIcon = (props: ICartIconProps) => {
     animate: {
       scale: 1,
       opacity: 1,
-      transition: { type: "spring", stiffness: 300, damping: 20 },
     },
     exit: {
       scale: 0,
       opacity: 0,
-      transition: { duration: 0.2 },
     },
     bounce: {
       scale: [1, 1.3, 1],
-      transition: { duration: 0.3, ease: "easeInOut" },
     },
   };
 
@@ -102,6 +99,7 @@ const CartIcon = (props: ICartIconProps) => {
             animate="animate"
             exit="exit"
             key={itemCount}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             {/* Badge background */}
             <motion.div className="relative">
@@ -109,6 +107,7 @@ const CartIcon = (props: ICartIconProps) => {
                 className="bg-red-500 text-white text-xs font-bold rounded-full min-w-[24px] h-6 flex items-center justify-center px-2 shadow-lg relative z-10"
                 animate={itemCount > 0 ? "bounce" : ""}
                 variants={badgeVariants}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
               >
                 {itemCount > 99 ? "99+" : itemCount}
               </motion.span>

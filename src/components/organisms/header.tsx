@@ -134,12 +134,10 @@ const Header = (props: IHeaderProps) => {
       animate: {
         opacity: 1,
         height: "auto",
-        transition: { duration: 0.3, ease: "easeOut" },
       },
       exit: {
         opacity: 0,
         height: 0,
-        transition: { duration: 0.2, ease: "easeIn" },
       },
     };
 
@@ -164,6 +162,10 @@ const Header = (props: IHeaderProps) => {
             initial="initial"
             animate="animate"
             exit="exit"
+            transition={{
+              duration: 0.3,
+              ease: "easeOut",
+            }}
           >
             <div className="px-6 py-6 space-y-4">
               {navItems.map((item, index) => (

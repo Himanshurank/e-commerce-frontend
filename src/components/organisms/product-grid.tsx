@@ -8,7 +8,7 @@ interface IProduct {
   id: string;
   name: string;
   price: number;
-  originalPrice?: number;
+  originalPrice?: number | null;
   image: string;
   rating: number;
   reviewCount: number;
@@ -107,12 +107,6 @@ const ProductGrid = (props: IProductGridProps) => {
         opacity: 1,
         y: 0,
         scale: 1,
-        transition: {
-          type: "spring",
-          stiffness: 100,
-          damping: 15,
-          duration: 0.6,
-        },
       },
     };
 
@@ -159,6 +153,12 @@ const ProductGrid = (props: IProductGridProps) => {
             key={product.id}
             variants={itemVariants}
             custom={index}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 15,
+              duration: 0.6,
+            }}
             whileHover={{
               y: -8,
               transition: { type: "spring", stiffness: 300, damping: 20 },

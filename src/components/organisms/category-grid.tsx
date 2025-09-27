@@ -93,7 +93,6 @@ const CategoryGrid = (props: ICategoryGridProps) => {
         opacity: 1,
         y: 0,
         scale: 1,
-        transition: { type: "spring", stiffness: 100, damping: 15 },
       },
     };
 
@@ -114,14 +113,19 @@ const CategoryGrid = (props: ICategoryGridProps) => {
 
     return (
       <motion.div
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-6"
+        className="grid grid-cols-2 md:grid-cols-4 gap-4"
         variants={containerVariants}
         initial="initial"
         whileInView="animate"
         viewport={{ once: true, amount: 0.2 }}
       >
         {categories.map((category, index) => (
-          <motion.div key={category.id} variants={itemVariants} custom={index}>
+          <motion.div 
+            key={category.id} 
+            variants={itemVariants} 
+            custom={index}
+            transition={{ type: "spring", stiffness: 100, damping: 15 }}
+          >
             <CategoryCard
               category={category}
               testId={`category-${category.slug}`}
