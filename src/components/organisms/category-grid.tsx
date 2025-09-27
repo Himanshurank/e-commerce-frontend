@@ -120,9 +120,9 @@ const CategoryGrid = (props: ICategoryGridProps) => {
         viewport={{ once: true, amount: 0.2 }}
       >
         {categories.map((category, index) => (
-          <motion.div 
-            key={category.id} 
-            variants={itemVariants} 
+          <motion.div
+            key={category.id}
+            variants={itemVariants}
             custom={index}
             transition={{ type: "spring", stiffness: 100, damping: 15 }}
           >

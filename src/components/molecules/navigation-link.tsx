@@ -119,7 +119,6 @@ const NavigationLink = (props: INavigationLinkProps) => {
           animate={{
             scale: 1,
             opacity: 0.05,
-            
           }}
         />
       )}
