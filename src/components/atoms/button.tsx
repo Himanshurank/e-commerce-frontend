@@ -130,6 +130,7 @@ const Button = (props: IButtonProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2 }}
+          className="flex items-center"
         >
           {children}
         </motion.div>

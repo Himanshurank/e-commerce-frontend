@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/organisms/header";
+import SearchSection from "@/components/organisms/search-section";
 import Footer from "@/components/organisms/footer";
 
 interface IMainLayoutProps {
@@ -14,6 +15,7 @@ interface IMainLayoutProps {
   cartItemCount?: number;
   onCartClick?: () => void;
   onSearch?: (query: string) => void;
+  onFilter?: (filters: any) => void;
   showFooter?: boolean;
   loading?: boolean;
   error?: string;
@@ -30,6 +32,7 @@ const MainLayout = (props: IMainLayoutProps) => {
     cartItemCount,
     onCartClick,
     onSearch,
+    onFilter,
     showFooter = true,
     loading = false,
     error,
@@ -260,11 +263,21 @@ const MainLayout = (props: IMainLayoutProps) => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
         >
-          <Header
-            cartItemCount={cartItemCount}
-            onCartClick={onCartClick}
-            onSearch={onSearch}
-          />
+          <Header cartItemCount={cartItemCount} onCartClick={onCartClick} />
+        </motion.div>
+
+        {/* Search Section below navbar */}
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            duration: 0.5,
+            delay: 0.1,
+            type: "spring",
+            stiffness: 100,
+          }}
+        >
+          <SearchSection onSearch={onSearch} onFilter={onFilter} />
         </motion.div>
 
         {/* Main content area with proper landmark and stagger animation */}

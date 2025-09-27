@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@/components/atoms/button";
 import {
   HERO_STATS,
@@ -11,34 +11,10 @@ interface IHeroSectionProps {
   testId?: string;
   onShopNowClick?: () => void;
   onBecomeSellerClick?: () => void;
-  onSearch?: (query: string) => void;
 }
 
 const HeroSection = (props: IHeroSectionProps) => {
-  const {
-    className = "",
-    testId,
-    onShopNowClick,
-    onBecomeSellerClick,
-    onSearch,
-  } = props;
-
-  const [searchQuery, setSearchQuery] = useState("");
-
-  // Helper Functions
-  const handleSearch = () => {
-    if (onSearch && searchQuery.trim()) {
-      onSearch(searchQuery.trim());
-    } else if (onShopNowClick) {
-      onShopNowClick();
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
+  const { className = "", testId, onShopNowClick, onBecomeSellerClick } = props;
 
   // Icon Components
   const renderIcon = (iconType: string, className: string = "w-6 h-6") => {
@@ -235,39 +211,16 @@ const HeroSection = (props: IHeroSectionProps) => {
     );
   };
 
-  const renderSearchBox = () => {
-    return (
-      <div className="max-w-3xl mx-auto">
-        <div className="relative flex items-center bg-white rounded-2xl shadow-brand-lg border border-neutral-200 overflow-hidden">
-          <div className="absolute left-4 pointer-events-none">
-            {renderIcon("search", "w-6 h-6 text-neutral-400")}
-          </div>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder={HERO_CONTENT.SEARCH_PLACEHOLDER}
-            className="flex-1 pl-14 pr-4 py-6 text-lg placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
-          />
-          <Button
-            onClick={handleSearch}
-            className="m-2 px-10 py-4 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0 focus:ring-4 focus:ring-brand-200"
-            variant="primary"
-          >
-            <div className="flex items-center gap-2">
-              {renderIcon("search", "w-5 h-5")}
-              Search
-            </div>
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
   const renderCTAButtons = () => {
     return (
       <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <Button
+          onClick={onShopNowClick}
+          className="px-8 py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          variant="primary"
+        >
+          {HERO_CONTENT.CTA_BUTTONS.primary}
+        </Button>
         <Button
           onClick={onBecomeSellerClick}
           className="px-8 py-4 bg-white text-brand-600 border-2 border-brand-200 hover:bg-brand-50 font-bold rounded-xl shadow-md transition-all duration-300 transform hover:scale-105"
@@ -339,7 +292,6 @@ const HeroSection = (props: IHeroSectionProps) => {
         {renderBadge()}
         {renderHeading()}
         {renderDescription()}
-        {renderSearchBox()}
         {renderCTAButtons()}
         {renderStats()}
       </div>

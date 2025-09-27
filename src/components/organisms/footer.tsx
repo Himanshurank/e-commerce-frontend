@@ -40,6 +40,7 @@ const Footer = (props: IFooterProps) => {
 
         <Typography
           variant="body"
+          component="div"
           className="text-neutral-600 mb-6 leading-relaxed"
         >
           Your trusted B2B marketplace connecting businesses with verified
@@ -85,11 +86,16 @@ const Footer = (props: IFooterProps) => {
         >
           <Typography
             variant="caption"
+            component="div"
             className="text-neutral-900 font-semibold mb-2 block"
           >
             Stay Updated
           </Typography>
-          <Typography variant="caption" className="text-neutral-600 text-xs">
+          <Typography
+            variant="caption"
+            component="div"
+            className="text-neutral-600 text-xs"
+          >
             Get the latest industry insights and product updates.
           </Typography>
         </motion.div>
@@ -115,6 +121,7 @@ const Footer = (props: IFooterProps) => {
         >
           <Typography
             variant="body"
+            component="div"
             className="text-neutral-900 font-bold mb-6 relative"
           >
             {section.title}
@@ -175,7 +182,11 @@ const Footer = (props: IFooterProps) => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.9, duration: 0.5 }}
           >
-            <Typography variant="caption" className="text-neutral-600">
+            <Typography
+              variant="caption"
+              component="span"
+              className="text-neutral-600"
+            >
               © 2024 ECommerce B2B Platform. All rights reserved.
             </Typography>
           </motion.div>

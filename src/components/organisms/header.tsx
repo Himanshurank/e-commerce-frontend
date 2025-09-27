@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/components/molecules/logo";
-import SearchBox from "@/components/molecules/search-box";
 import CartIcon from "@/components/molecules/cart-icon";
 import NavigationLink from "@/components/molecules/navigation-link";
 import Button from "../atoms/button";
@@ -12,26 +11,11 @@ interface IHeaderProps {
   testId?: string;
   cartItemCount?: number;
   onCartClick?: () => void;
-  onSearch?: (query: string) => void;
 }
 
 const Header = (props: IHeaderProps) => {
-  const {
-    className = "",
-    testId,
-    cartItemCount = 2,
-    onCartClick,
-    onSearch,
-  } = props;
-  const [searchQuery, setSearchQuery] = useState("");
+  const { className = "", testId, cartItemCount = 2, onCartClick } = props;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const handleSearchSubmit = (query: string) => {
-    if (onSearch) {
-      onSearch(query);
-    }
-    console.log("Search query:", query);
-  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -267,25 +251,12 @@ const Header = (props: IHeaderProps) => {
             <Logo />
           </motion.div>
 
-          {/* Search box with scale animation */}
-          <motion.div
-            className="flex-1 max-w-lg mx-6"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.25, duration: 0.4 }}
-          >
-            <SearchBox
-              placeholder="Search products, suppliers, categories..."
-              value={searchQuery}
-              onChange={setSearchQuery}
-              onSubmit={handleSearchSubmit}
-              fullWidth
-              testId="header-search"
-            />
-          </motion.div>
+          {/* Navigation */}
+          <div className="flex-1 flex justify-center">
+            {renderDesktopNavigation()}
+          </div>
 
-          {/* Navigation and actions */}
-          {renderDesktopNavigation()}
+          {/* User actions */}
           {renderUserActions()}
         </motion.div>
       </div>
