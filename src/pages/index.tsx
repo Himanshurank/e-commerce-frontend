@@ -30,6 +30,35 @@ export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
       },
     });
 
+    // Transform backend data to frontend format and handle null images
+    const categories = (homepageData.data.categories || []).map(
+      (category: any) => ({
+        id: category.id,
+        name: category.name,
+        image:
+          category.image ||
+          "https://placehold.co/64x64/6366f1/ffffff/png?text=Cat",
+        productCount: category.productCount,
+        slug: category.slug,
+      })
+    );
+
+    const featuredProducts = (homepageData.data.products?.featured || []).map(
+      (product: any) => ({
+        id: product.id,
+        name: product.name,
+        price: product.discountPrice || product.basePrice,
+        originalPrice: product.discountPrice ? product.basePrice : null,
+        image:
+          (product.images && product.images[0]) ||
+          "https://placehold.co/300x300/6366f1/ffffff/png?text=Product",
+        rating: 4.5, // Default rating since backend doesn't provide it
+        reviewCount: 0, // Default review count since backend doesn't provide it
+        seller: product.sellerName,
+        inStock: true,
+      })
+    );
+
     const stats = {
       totalProducts: homepageData.data.metadata?.totalProducts || 0,
       totalSuppliers: homepageData.data.metadata?.totalCategories || 0,
@@ -38,8 +67,8 @@ export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
 
     return {
       props: {
-        categories: homepageData.data.categories,
-        featuredProducts: homepageData.data.products.featured,
+        categories,
+        featuredProducts,
         stats,
       },
     };
