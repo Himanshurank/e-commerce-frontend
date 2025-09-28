@@ -173,16 +173,6 @@ const Input = (props: IInputProps) => {
           whileFocus={{ scale: 1.01 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
         />
-
-        {/* Focus indicator line */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-600 rounded-full"
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={
-            isFocused ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }
-          }
-          transition={{ duration: 0.3 }}
-        />
       </motion.div>
       {renderError()}
     </motion.div>
