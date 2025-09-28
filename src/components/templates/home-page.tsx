@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MainLayout from "@/components/layouts/main-layout";
 import HeroSection from "../organisms/hero-section";
 import CategoryGrid from "../organisms/category-grid";
@@ -7,10 +7,25 @@ import NewsletterSection from "../organisms/newsletter-section";
 import { getClientHttpService } from "@/core/shared/factories/http-service.factory";
 import { IHomePageProps } from "@/core/modules/homepage/types";
 import PageContainer from "../layouts/pageContainer";
+import { authService, User } from "@/core/shared/services/auth.service";
 
 const HomePage = (props: IHomePageProps) => {
   const { className, categories, featuredProducts, stats } = props;
   const [cartItems, setCartItems] = useState<string[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Check authentication status on component mount
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const authenticated = authService.isAuthenticated();
+      const userData = authService.getUser();
+      setIsAuthenticated(authenticated);
+      setUser(userData);
+    };
+
+    checkAuthStatus();
+  }, []);
 
   const handleAddToCart = async (productId: string) => {
     try {
@@ -88,7 +103,11 @@ const HomePage = (props: IHomePageProps) => {
       <PageContainer component="section">
         <HeroSection
           onShopNowClick={handleShopNowClick}
-          onBecomeSellerClick={handleBecomeSellerClick}
+          onBecomeSellerClick={
+            !isAuthenticated || (user && user.role !== "SELLER")
+              ? handleBecomeSellerClick
+              : undefined
+          }
         />
 
         <CategoryGrid

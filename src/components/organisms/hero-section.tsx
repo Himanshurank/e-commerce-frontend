@@ -221,13 +221,15 @@ const HeroSection = (props: IHeroSectionProps) => {
         >
           {HERO_CONTENT.CTA_BUTTONS.primary}
         </Button>
-        <Button
-          onClick={onBecomeSellerClick}
-          className="px-8 py-4 bg-white text-brand-600 border-2 border-brand-200 hover:bg-brand-50 font-bold rounded-xl shadow-md transition-all duration-300 transform hover:scale-105"
-          variant="secondary"
-        >
-          {HERO_CONTENT.CTA_BUTTONS.secondary}
-        </Button>
+        {onBecomeSellerClick && (
+          <Button
+            onClick={onBecomeSellerClick}
+            className="px-8 py-4 bg-white text-brand-600 border-2 border-brand-200 hover:bg-brand-50 font-bold rounded-xl shadow-md transition-all duration-300 transform hover:scale-105"
+            variant="secondary"
+          >
+            {HERO_CONTENT.CTA_BUTTONS.secondary}
+          </Button>
+        )}
       </div>
     );
   };
