@@ -15,7 +15,7 @@ interface IProps {
 }
 
 const Header = (props: IProps) => {
-  const { className = "", cartItemCount = 0, onCartClick } = props;
+  const { className, cartItemCount = 0, onCartClick } = props;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
