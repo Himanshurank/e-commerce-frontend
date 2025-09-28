@@ -6,6 +6,7 @@ import ProductGrid from "../organisms/product-grid";
 import NewsletterSection from "../organisms/newsletter-section";
 import { getClientHttpService } from "@/core/shared/factories/http-service.factory";
 import { IHomePageProps } from "@/core/modules/homepage/types";
+import PageContainer from "../layouts/pageContainer";
 
 const HomePage = (props: IHomePageProps) => {
   const { className, categories, featuredProducts, stats } = props;
@@ -83,35 +84,31 @@ const HomePage = (props: IHomePageProps) => {
   };
 
   return (
-    <MainLayout
-      cartItemCount={cartItems.length}
-      onCartClick={handleCartClick}
-      onSearch={handleSearch}
-      className={className}
-    >
-      <HeroSection
-        onShopNowClick={handleShopNowClick}
-        onBecomeSellerClick={handleBecomeSellerClick}
-      />
+    <>
+      <PageContainer component="section">
+        <HeroSection
+          onShopNowClick={handleShopNowClick}
+          onBecomeSellerClick={handleBecomeSellerClick}
+        />
 
-      <CategoryGrid
-        title="Shop by Category"
-        subtitle="Discover thousands of products across our most popular categories"
-        categories={categories}
-        onViewAll={handleViewAllCategories}
-      />
+        <CategoryGrid
+          title="Shop by Category"
+          subtitle="Discover thousands of products across our most popular categories"
+          categories={categories}
+          onViewAll={handleViewAllCategories}
+        />
 
-      <ProductGrid
-        id="featured-products"
-        title="Featured Products"
-        subtitle="Hand-picked products from our top sellers"
-        products={featuredProducts}
-        onAddToCart={handleAddToCart}
-        onViewAll={handleViewAllProducts}
-      />
-
+        <ProductGrid
+          id="featured-products"
+          title="Featured Products"
+          subtitle="Hand-picked products from our top sellers"
+          products={featuredProducts}
+          onAddToCart={handleAddToCart}
+          onViewAll={handleViewAllProducts}
+        />
+      </PageContainer>
       <NewsletterSection onSubscribe={handleNewsletterSubscribe} />
-    </MainLayout>
+    </>
   );
 };
 
