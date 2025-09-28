@@ -8,10 +8,18 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
+    "lint:strict": "next lint --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "type-check": "tsc --noEmit",
-    "prepare": "husky install"
+    "type-check:watch": "tsc --noEmit --watch",
+    "clean": "rm -rf .next out dist build",
+    "clean:all": "rm -rf .next out dist build node_modules package-lock.json",
+    "analyze": "ANALYZE_BUNDLE=true npm run build",
+    "check-all": "npm run type-check && npm run lint:strict && npm run format:check",
+    "fix-all": "npm run type-check && npm run lint:fix && npm run format",
+    "prepare": "husky install",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "framer-motion": "^12.23.22",
@@ -30,9 +38,13 @@
     "eslint": "^8.54.0",
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^8.0.3",
-    "lint-staged": "^15.1.0",
+    "lint-staged": "^15.5.2",
     "postcss": "^8.4.32",
     "prettier": "^3.1.0",
     "tailwindcss": "^3.3.6",
@@ -41,11 +53,15 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
+      "eslint --fix --max-warnings 0",
+      "prettier --write",
+      "bash -c 'tsc --noEmit'"
+    ],
+    "*.{json,md,css,yml,yaml}": [
       "prettier --write"
     ],
-    "*.{json,md,css}": [
-      "prettier --write"
+    "*.{js,jsx,ts,tsx,json,md,css,yml,yaml}": [
+      "git add"
     ]
   }
 }

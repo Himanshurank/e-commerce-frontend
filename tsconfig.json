@@ -1,28 +1,103 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "es6"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
+    // Target and Library Configuration
+    "target": "es2017",
+    "lib": ["dom", "dom.iterable", "es2017", "es2018", "es2019", "es2020"],
+
+    // Module Configuration
     "module": "esnext",
     "moduleResolution": "bundler",
+    "allowJs": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // Type Checking Configuration
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+
+    // Additional Strict Checks
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    // JSX Configuration
     "jsx": "preserve",
+    "jsxImportSource": "react",
+
+    // Build Configuration
     "incremental": true,
+    "tsBuildInfoFile": ".next/cache/tsconfig.tsbuildinfo",
+
+    // Import/Export Configuration
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": false,
+
+    // Declaration Configuration
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true,
+
+    // Emit Configuration
+    "removeComments": false,
+    "importHelpers": true,
+    "downlevelIteration": true,
+
+    // Next.js Plugin
     "plugins": [
       {
         "name": "next"
       }
     ],
+
+    // Path Mapping
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/public/*": ["./public/*"]
-    }
+      "@/public/*": ["./public/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/pages/*": ["./src/pages/*"],
+      "@/styles/*": ["./src/styles/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/shared/*": ["./src/shared/*"]
+    },
+
+    // Type Roots
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+
+  // Include Configuration
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", ".next/types/**/*.ts", "./src/**/*"],
+
+  // Exclude Configuration
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "build",
+    "dist",
+    "coverage",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ],
+
+  // TypeScript 5.0+ Configuration
+  "ts-node": {
+    "esm": true,
+    "compilerOptions": {
+      "module": "esnext",
+      "moduleResolution": "bundler"
+    }
+  }
 }
