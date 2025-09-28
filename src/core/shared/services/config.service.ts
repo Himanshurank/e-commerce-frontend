@@ -107,6 +107,10 @@ export class ConfigService implements IConfigService {
         analytics: "/admin/analytics",
         reports: "/admin/reports",
       },
+
+      pages: {
+        homepage: "/pages/homepage",
+      },
     };
   }
 

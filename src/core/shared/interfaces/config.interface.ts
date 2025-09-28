@@ -96,4 +96,9 @@ export interface IApiPaths {
     analytics: string;
     reports: string;
   };
+
+  // Pages endpoints
+  pages: {
+    homepage: string;
+  };
 }

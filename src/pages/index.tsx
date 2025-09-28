@@ -1,14 +1,15 @@
-import React from "react";
 import { GetServerSideProps } from "next";
 import HomePage from "@/components/templates/home-page";
 import { getServerHttpService } from "@/core/shared/factories/http-service.factory";
 import { IHomePageProps } from "@/core/modules/homepage/types";
+import { ConfigService } from "@/core/shared/services/config.service";
 
 export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
   context
 ) => {
   try {
     // Get server-side HTTP service
+    const configService = new ConfigService();
     const httpService = getServerHttpService({
       "X-Server-Request": "true",
       "X-Request-ID": `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -18,7 +19,7 @@ export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
 
     // Use the dedicated homepage endpoint from backend API reference
     const homepageData = await httpService.get<any>({
-      path: "/api/v1/pages/homepage",
+      path: configService.getApiPaths().pages.homepage,
       queryParams: {
         category_limit: 8,
         featured_product_limit: 8,
