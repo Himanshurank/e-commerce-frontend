@@ -91,6 +91,7 @@ export class ConfigService implements IConfigService {
         refresh: "/auth/refresh",
         forgotPassword: "/auth/forgot-password",
         resetPassword: "/auth/reset-password",
+        profile: "/auth/profile",
       },
 
       // Seller endpoints

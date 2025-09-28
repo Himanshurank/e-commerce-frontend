@@ -40,23 +40,14 @@ const Header = (props: IHeaderProps) => {
     setIsSignUpModalOpen(false);
   };
 
-  const handleSignIn = async (email: string, password: string) => {
-    // TODO: Implement actual sign in logic
-    console.log("Sign in attempt:", { email, password });
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  const handleSignInSuccess = (user: any) => {
+    console.log("User signed in successfully:", user);
+    // TODO: Update app state, redirect user, show success message, etc.
   };
 
-  const handleSignUp = async (userData: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-  }) => {
-    // TODO: Implement actual sign up logic
-    console.log("Customer sign up attempt:", userData);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  const handleSignUpSuccess = (user: any) => {
+    console.log("User registered successfully:", user);
+    // TODO: Update app state, redirect user, show success message, etc.
   };
 
   const handleSwitchToSignUp = () => {
@@ -228,7 +219,7 @@ const Header = (props: IHeaderProps) => {
       <SignInModal
         isOpen={isSignInModalOpen}
         onClose={handleSignInModalClose}
-        onSignIn={handleSignIn}
+        onSignInSuccess={handleSignInSuccess}
         onSwitchToSignUp={handleSwitchToSignUp}
       />
 
@@ -236,7 +227,7 @@ const Header = (props: IHeaderProps) => {
       <SignUpModal
         isOpen={isSignUpModalOpen}
         onClose={handleSignUpModalClose}
-        onSignUp={handleSignUp}
+        onSignUpSuccess={handleSignUpSuccess}
         onSwitchToSignIn={handleSwitchToSignIn}
       />
     </header>

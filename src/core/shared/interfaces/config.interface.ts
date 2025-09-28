@@ -80,6 +80,7 @@ export interface IApiPaths {
     refresh: string;
     forgotPassword: string;
     resetPassword: string;
+    profile: string;
   };
 
   // Seller endpoints

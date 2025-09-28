@@ -4,22 +4,22 @@ import Button from "@/components/atoms/button";
 import Input from "@/components/atoms/input";
 import Typography from "@/components/atoms/typography";
 import Icon from "@/components/atoms/icon";
+import {
+  authService,
+  RegisterRequest,
+} from "@/core/shared/services/auth.service";
 
 interface ISignUpModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSignUp?: (userData: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-  }) => void;
+  onSignUpSuccess?: (user: any) => void; // Called when registration is successful
   onSwitchToSignIn?: () => void;
   className?: string;
 }
 
 const SignUpModal = (props: ISignUpModalProps) => {
-  const { isOpen, onClose, onSignUp, onSwitchToSignIn, className } = props;
+  const { isOpen, onClose, onSignUpSuccess, onSwitchToSignIn, className } =
+    props;
 
   // State management
   const [firstName, setFirstName] = useState<string>("");
@@ -93,25 +93,61 @@ const SignUpModal = (props: ISignUpModalProps) => {
     setIsLoading(true);
 
     try {
-      if (onSignUp) {
-        await onSignUp({
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          email,
-          password,
-        });
+      const registerData: RegisterRequest = {
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email,
+        password,
+        role: "CUSTOMER",
+      };
+
+      const response = await authService.register(registerData);
+
+      if (response.success) {
+        // Call success callback if provided
+        if (onSignUpSuccess) {
+          onSignUpSuccess(response.data.user);
+        }
+
+        // Reset form on success
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setErrors({});
+        onClose();
+
+        // Show success message or redirect as needed
+        console.log("Registration successful:", response.data.message);
+      } else {
+        setErrors({ email: "Registration failed. Please try again." });
       }
-      // Reset form on success
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setErrors({});
-      onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Sign up error:", error);
-      setErrors({ email: "Registration failed. Please try again." });
+
+      // Handle specific API errors
+      if (error.response?.data?.error) {
+        const apiError = error.response.data.error;
+        if (apiError.code === "EMAIL_ALREADY_EXISTS") {
+          setErrors({ email: "An account with this email already exists." });
+        } else if (apiError.details && Array.isArray(apiError.details)) {
+          // Handle validation errors from backend
+          const newErrors: any = {};
+          apiError.details.forEach((detail: any) => {
+            if (detail.field) {
+              newErrors[detail.field] = detail.message;
+            }
+          });
+          setErrors(newErrors);
+        } else {
+          setErrors({
+            email: apiError.message || "Registration failed. Please try again.",
+          });
+        }
+      } else {
+        setErrors({ email: "Registration failed. Please try again." });
+      }
     } finally {
       setIsLoading(false);
     }

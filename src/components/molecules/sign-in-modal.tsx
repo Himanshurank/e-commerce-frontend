@@ -4,17 +4,19 @@ import Button from "@/components/atoms/button";
 import Input from "@/components/atoms/input";
 import Typography from "@/components/atoms/typography";
 import Icon from "@/components/atoms/icon";
+import { authService, LoginRequest } from "@/core/shared/services/auth.service";
 
 interface ISignInModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSignIn?: (email: string, password: string) => void;
+  onSignInSuccess?: (user: any) => void; // Called when login is successful
   onSwitchToSignUp?: () => void;
   className?: string;
 }
 
 const SignInModal = (props: ISignInModalProps) => {
-  const { isOpen, onClose, onSignIn, onSwitchToSignUp, className } = props;
+  const { isOpen, onClose, onSignInSuccess, onSwitchToSignUp, className } =
+    props;
 
   // State management
   const [email, setEmail] = useState<string>("");
@@ -60,17 +62,50 @@ const SignInModal = (props: ISignInModalProps) => {
     setIsLoading(true);
 
     try {
-      if (onSignIn) {
-        await onSignIn(email, password);
+      const loginData: LoginRequest = {
+        email,
+        password,
+      };
+
+      const response = await authService.login(loginData);
+
+      if (response.success) {
+        // Call success callback if provided
+        if (onSignInSuccess) {
+          onSignInSuccess(response.data.user);
+        }
+
+        // Reset form on success
+        setEmail("");
+        setPassword("");
+        setErrors({});
+        onClose();
+
+        // Show success message or redirect as needed
+        console.log("Login successful:", response.data.message);
+      } else {
+        setErrors({ email: "Invalid email or password" });
       }
-      // Reset form on success
-      setEmail("");
-      setPassword("");
-      setErrors({});
-      onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Sign in error:", error);
-      setErrors({ email: "Invalid email or password" });
+
+      // Handle specific API errors
+      if (error.response?.data?.error) {
+        const apiError = error.response.data.error;
+        if (apiError.code === "INVALID_CREDENTIALS") {
+          setErrors({ email: "Invalid email or password" });
+        } else if (apiError.code === "EMAIL_NOT_VERIFIED") {
+          setErrors({ email: "Please verify your email before signing in" });
+        } else if (apiError.code === "ACCOUNT_SUSPENDED") {
+          setErrors({ email: "Your account has been suspended" });
+        } else {
+          setErrors({
+            email: apiError.message || "Sign in failed. Please try again.",
+          });
+        }
+      } else {
+        setErrors({ email: "Sign in failed. Please try again." });
+      }
     } finally {
       setIsLoading(false);
     }
