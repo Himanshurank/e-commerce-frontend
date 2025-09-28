@@ -138,7 +138,7 @@ const Button = (props: IButtonProps) => {
 
       {/* Subtle ripple effect on click */}
       <motion.div
-        className="absolute inset-0 bg-white rounded-lg"
+        className={`absolute inset-0 bg-white ${size === "sm" ? "rounded-lg" : "rounded-xl"}`}
         variants={rippleVariants}
         initial="initial"
         whileTap="animate"

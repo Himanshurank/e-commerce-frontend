@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Logo from "@/components/molecules/logo";
 import CartIcon from "@/components/molecules/cart-icon";
 import NavigationLink from "@/components/molecules/navigation-link";
+import SignInModal from "@/components/molecules/sign-in-modal";
+import SignUpModal from "@/components/molecules/sign-up-modal";
 import Button from "../atoms/button";
 import Icon from "../atoms/icon";
 
@@ -14,9 +16,57 @@ interface IHeaderProps {
 const Header = (props: IHeaderProps) => {
   const { className, cartItemCount = 0, onCartClick } = props;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Event handlers
+  const handleSignInClick = () => {
+    setIsSignInModalOpen(true);
+  };
+
+  const handleSignInModalClose = () => {
+    setIsSignInModalOpen(false);
+  };
+
+  const handleSignUpClick = () => {
+    setIsSignUpModalOpen(true);
+  };
+
+  const handleSignUpModalClose = () => {
+    setIsSignUpModalOpen(false);
+  };
+
+  const handleSignIn = async (email: string, password: string) => {
+    // TODO: Implement actual sign in logic
+    console.log("Sign in attempt:", { email, password });
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  };
+
+  const handleSignUp = async (userData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+  }) => {
+    // TODO: Implement actual sign up logic
+    console.log("Customer sign up attempt:", userData);
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  };
+
+  const handleSwitchToSignUp = () => {
+    setIsSignInModalOpen(false);
+    setIsSignUpModalOpen(true);
+  };
+
+  const handleSwitchToSignIn = () => {
+    setIsSignUpModalOpen(false);
+    setIsSignInModalOpen(true);
   };
 
   // Navigation items following Jakob's Law - familiar structure
@@ -62,6 +112,7 @@ const Header = (props: IHeaderProps) => {
         <Button
           variant="ghost"
           size="sm"
+          onClick={handleSignInClick}
           className="text-neutral-700 hover:text-brand-600 hover:bg-neutral-100"
         >
           Sign In
@@ -69,6 +120,7 @@ const Header = (props: IHeaderProps) => {
         <Button
           variant="primary"
           size="sm"
+          onClick={handleSignUpClick}
           className="bg-brand-600 hover:bg-brand-700 text-white font-medium"
         >
           Sign Up
@@ -118,6 +170,7 @@ const Header = (props: IHeaderProps) => {
               variant="ghost"
               size="sm"
               fullWidth
+              onClick={handleSignInClick}
               className="justify-center text-neutral-700 hover:text-brand-600 hover:bg-neutral-100"
             >
               Sign In
@@ -126,6 +179,7 @@ const Header = (props: IHeaderProps) => {
               variant="primary"
               size="sm"
               fullWidth
+              onClick={handleSignUpClick}
               className="justify-center bg-brand-600 hover:bg-brand-700 text-white font-medium"
             >
               Sign Up
@@ -169,6 +223,22 @@ const Header = (props: IHeaderProps) => {
 
       {/* Mobile Menu */}
       {renderMobileMenu()}
+
+      {/* Sign In Modal */}
+      <SignInModal
+        isOpen={isSignInModalOpen}
+        onClose={handleSignInModalClose}
+        onSignIn={handleSignIn}
+        onSwitchToSignUp={handleSwitchToSignUp}
+      />
+
+      {/* Sign Up Modal */}
+      <SignUpModal
+        isOpen={isSignUpModalOpen}
+        onClose={handleSignUpModalClose}
+        onSignUp={handleSignUp}
+        onSwitchToSignIn={handleSwitchToSignIn}
+      />
     </header>
   );
 };
