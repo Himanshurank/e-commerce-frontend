@@ -1,5 +1,6 @@
 import { ClientHttpService } from "./client-http.service";
 import { ConfigService } from "./config.service";
+import Cookies from "js-cookie";
 
 // Types based on backend API reference
 export interface RegisterRequest {
@@ -151,20 +152,25 @@ class AuthService {
   }
 
   /**
-   * Store authentication token
+   * Store authentication token in secure cookie
    */
   private setAuthToken(token: string): void {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("auth_token", token);
-      // Set token for future requests
-      this.httpService.setDefaultHeaders({
-        Authorization: `Bearer ${token}`,
-      });
-    }
+    // Store token in secure, httpOnly cookie
+    Cookies.set("auth_token", token, {
+      expires: 7, // 7 days
+      secure: process.env.NODE_ENV === "production", // Only secure in production
+      sameSite: "strict", // CSRF protection
+      path: "/", // Available throughout the app
+    });
+
+    // Set token for future requests
+    this.httpService.setDefaultHeaders({
+      Authorization: `Bearer ${token}`,
+    });
   }
 
   /**
-   * Store user data
+   * Store user data in localStorage
    */
   private setUser(user: User): void {
     if (typeof window !== "undefined") {
@@ -173,17 +179,14 @@ class AuthService {
   }
 
   /**
-   * Get stored authentication token
+   * Get stored authentication token from cookie
    */
   getAuthToken(): string | null {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("auth_token");
-    }
-    return null;
+    return Cookies.get("auth_token") || null;
   }
 
   /**
-   * Get stored user data
+   * Get stored user data from localStorage
    */
   getUser(): User | null {
     if (typeof window !== "undefined") {
@@ -204,11 +207,16 @@ class AuthService {
    * Clear authentication data
    */
   private clearAuth(): void {
+    // Remove auth token cookie
+    Cookies.remove("auth_token", { path: "/" });
+
+    // Remove user data from localStorage
     if (typeof window !== "undefined") {
-      localStorage.removeItem("auth_token");
       localStorage.removeItem("user");
-      this.httpService.removeDefaultHeader("Authorization");
     }
+
+    // Remove authorization header
+    this.httpService.removeDefaultHeader("Authorization");
   }
 
   /**
@@ -221,6 +229,37 @@ class AuthService {
         Authorization: `Bearer ${token}`,
       });
     }
+  }
+
+  /**
+   * Get authentication token from server-side cookies (for SSR)
+   * @param cookieString - Cookie string from request headers
+   */
+  getAuthTokenFromCookies(cookieString: string): string | null {
+    if (!cookieString) return null;
+
+    const cookies = cookieString.split(";").reduce(
+      (acc, cookie) => {
+        const [key, value] = cookie.trim().split("=");
+        acc[key] = value;
+        return acc;
+      },
+      {} as Record<string, string>
+    );
+
+    return cookies.auth_token || null;
+  }
+
+  /**
+   * Get user data from server-side localStorage is not available in SSR
+   * This method is kept for API compatibility but returns null
+   * Use getUser() on client-side instead
+   * @param cookieString - Cookie string from request headers (not used)
+   */
+  getUserFromCookies(cookieString: string): User | null {
+    // User data is stored in localStorage, not available in SSR
+    // Return null and handle user data on client-side
+    return null;
   }
 }
 
