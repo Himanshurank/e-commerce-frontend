@@ -41,9 +41,7 @@ export class ConfigService implements IConfigService {
     return {
       apiBaseUrl:
         process.env.NEXT_PUBLIC_API_BASE_URL ||
-        (isDevelopment
-          ? "http://localhost:3001/api"
-          : "https://api.ecommerce.com"),
+        (isDevelopment ? "http://localhost:5000" : "https://api.ecommerce.com"),
       environment: (process.env.NODE_ENV as any) || "development",
       timeout: parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || "10000"),
       retries: parseInt(process.env.NEXT_PUBLIC_API_RETRIES || "3"),
@@ -110,7 +108,7 @@ export class ConfigService implements IConfigService {
       },
 
       pages: {
-        homepage: "/pages/homepage",
+        homepage: "/api/homepage",
       },
     };
   }

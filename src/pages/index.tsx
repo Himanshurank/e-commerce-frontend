@@ -3,6 +3,7 @@ import HomePage from "@/components/templates/home-page";
 import { getServerHttpService } from "@/core/shared/factories/http-service.factory";
 import { IHomePageProps } from "@/core/modules/homepage/types";
 import { ConfigService } from "@/core/shared/services/config.service";
+import { HomepageService } from "@/core/modules/homepage/homepage.service";
 import PageContainer from "@/components/layouts/pageContainer";
 
 export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
@@ -12,54 +13,30 @@ export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
     // Get server-side HTTP service
     const configService = new ConfigService();
     const httpService = getServerHttpService({
+      "Content-Type": "application/json",
+      Accept: "application/json",
       "X-Server-Request": "true",
       "X-Request-ID": `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       "User-Agent":
         context.req.headers["user-agent"] || "ECommerce-Server/1.0.0",
     });
 
-    // Use the dedicated homepage endpoint from backend API reference
-    const homepageData = await httpService.get<any>({
-      path: configService.getApiPaths().pages.homepage,
-      queryParams: {
-        category_limit: 8,
-        featured_product_limit: 8,
-        include_metadata: true,
-      },
-    });
+    // Use the homepage service to fetch data
+    const homepageService = new HomepageService(httpService);
+    const homepageData = await homepageService.getHomepageData();
 
-    // Transform backend data to frontend format and handle null images
-    const categories = (homepageData.data.categories || []).map(
-      (category: any) => ({
-        id: category.id,
-        name: category.name,
-        image:
-          category.image ||
-          "https://placehold.co/64x64/6366f1/ffffff/png?text=Cat",
-        productCount: category.productCount,
-        slug: category.slug,
-      })
+    // Transform backend data to frontend format
+    const categories = homepageData.categories.map((category) =>
+      HomepageService.transformCategory(category)
     );
 
-    const featuredProducts = (homepageData.data.products?.featured || []).map(
-      (product: any) => ({
-        id: product.id,
-        name: product.name,
-        price: product.discountPrice || product.basePrice,
-        originalPrice: product.discountPrice ? product.basePrice : null,
-        image:
-          (product.images && product.images[0]) ||
-          "https://placehold.co/300x300/6366f1/ffffff/png?text=Product",
-        rating: 4.5, // Default rating since backend doesn't provide it
-        reviewCount: 0, // Default review count since backend doesn't provide it
-        seller: product.sellerName,
-        inStock: true,
-      })
+    const featuredProducts = homepageData.featuredProducts.map((product) =>
+      HomepageService.transformProduct(product)
     );
 
     const stats = {
-      totalProducts: homepageData.data.metadata?.totalProducts || 0,
-      totalSuppliers: homepageData.data.metadata?.totalCategories || 0,
+      totalProducts: featuredProducts.length,
+      totalSuppliers: categories.length,
       totalCountries: 190, // Static value as not provided by API
     };
 
@@ -72,8 +49,18 @@ export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
     };
   } catch (error) {
     console.error("Homepage API Error:", error);
+
+    // Return fallback data instead of notFound for better UX
     return {
-      notFound: true,
+      props: {
+        categories: [],
+        featuredProducts: [],
+        stats: {
+          totalProducts: 0,
+          totalSuppliers: 0,
+          totalCountries: 190,
+        },
+      },
     };
   }
 };

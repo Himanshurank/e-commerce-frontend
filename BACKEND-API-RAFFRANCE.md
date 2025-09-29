@@ -1,819 +1,466 @@
-# E-Commerce Backend API Endpoints
+# E-Commerce Backend API Documentation
 
-## Authentication & User Management
+## Base URL
 
-### Register User
+```
+http://localhost:5000
+```
 
-**POST** `/api/v1/auth/users/register`
-
-**Request Body:**
+## Common Headers
 
 ```json
 {
-  "email": "user@example.com",
-  "password": "Password123!",
-  "firstName": "John",
-  "lastName": "Doe",
-  "role": "CUSTOMER", // Optional: "CUSTOMER" | "SELLER"
-  "phoneNumber": "+1234567890" // Optional
+  "Content-Type": "application/json",
+  "Accept": "application/json"
 }
 ```
 
-**Response:**
+## Standard Response Format
 
-```json
-{
-  "success": true,
-  "data": {
-    "user": {
-      "id": "uuid",
-      "email": "user@example.com",
-      "firstName": "John",
-      "lastName": "Doe",
-      "fullName": "John Doe",
-      "role": "CUSTOMER",
-      "status": "ACTIVE",
-      "emailVerified": false,
-      "phoneNumber": "+1234567890",
-      "createdAt": "2024-01-01T00:00:00.000Z"
-    },
-    "token": "jwt_token_here",
-    "expiresIn": 86400,
-    "emailVerificationRequired": true,
-    "message": "User created successfully"
-  },
-  "message": "User registered successfully"
+### Success Response
+
+```typescript
+interface ApiResponse<T> {
+  statusCode: number;
+  data: T;
+  message: string;
+  success: true;
 }
 ```
 
-### Login User
+### Error Response
 
-**POST** `/api/v1/auth/users/login`
-
-**Request Body:**
-
-```json
-{
-  "email": "user@example.com",
-  "password": "Password123!",
-  "rememberMe": false // Optional
-}
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "user": {
-      "id": "uuid",
-      "email": "user@example.com",
-      "firstName": "John",
-      "lastName": "Doe",
-      "fullName": "John Doe",
-      "role": "CUSTOMER",
-      "status": "ACTIVE",
-      "emailVerified": true,
-      "phoneNumber": "+1234567890",
-      "canLogin": true,
-      "canSellProducts": false,
-      "canAccessAdminPanel": false,
-      "needsApproval": false
-    },
-    "token": "jwt_token_here",
-    "expiresIn": 86400,
-    "sellerProfile": {
-      // Only if user is SELLER
-      "id": "uuid",
-      "businessName": "My Business",
-      "isVerified": true,
-      "canReceivePayouts": true,
-      "hasCompleteProfile": true
-    },
-    "message": "Login successful"
-  },
-  "message": "Login successful"
-}
-```
-
-### Logout User
-
-**POST** `/api/v1/auth/users/logout`
-
-**Request Body:** None
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "message": "Logout successful"
-}
-```
-
-### Get User Profile
-
-**GET** `/api/v1/auth/users/profile`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Get user profile endpoint - to be implemented",
-    "userId": "uuid"
-  }
-}
-```
-
-### Update User Profile
-
-**PUT** `/api/v1/auth/users/profile`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Request Body:**
-
-```json
-{
-  "firstName": "John", // Optional
-  "lastName": "Doe", // Optional
-  "phoneNumber": "+1234567890" // Optional
-}
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Update user profile endpoint - to be implemented",
-    "userId": "uuid",
-    "requestBody": {}
-  }
-}
-```
-
-### Verify Email
-
-**GET** `/api/v1/auth/users/verify-email/:token`
-
-**URL Parameters:**
-
-- `token`: Email verification token
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Email verification endpoint - to be implemented",
-    "token": "verification_token"
-  }
-}
-```
-
-### Resend Email Verification
-
-**POST** `/api/v1/auth/users/resend-verification`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Request Body:** None
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Resend email verification endpoint - to be implemented",
-    "userId": "uuid"
-  }
-}
-```
-
-### Request Password Reset
-
-**POST** `/api/v1/auth/users/request-password-reset`
-
-**Request Body:**
-
-```json
-{
-  "email": "user@example.com"
-}
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Password reset request endpoint - to be implemented",
-    "email": "user@example.com"
-  }
-}
-```
-
-### Reset Password
-
-**POST** `/api/v1/auth/users/reset-password/:token`
-
-**URL Parameters:**
-
-- `token`: Password reset token
-
-**Request Body:**
-
-```json
-{
-  "password": "NewPassword123!"
-}
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Password reset endpoint - to be implemented",
-    "token": "reset_token"
-  }
+```typescript
+interface ApiError {
+  statusCode: number;
+  message: string;
+  errors: any[];
+  success: false;
 }
 ```
 
 ---
 
-## Product Management
-
-### Get Product by ID or Slug
-
-**GET** `/api/v1/products/:identifier`
-
-**URL Parameters:**
-
-- `identifier`: Product ID (UUID) or slug
-
-**Query Parameters:**
-
-- `increment_view`: Set to "true" to increment view count (optional)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "id": "uuid",
-    "name": "Product Name",
-    "slug": "product-name",
-    "description": "Product description",
-    "shortDescription": "Short description",
-    "sellerId": "seller_uuid",
-    "categoryId": "category_uuid",
-    "basePrice": 99.99,
-    "discountPrice": 79.99,
-    "currency": "USD",
-    "stockQuantity": 100,
-    "lowStockThreshold": 10,
-    "sku": "PROD-001",
-    "weight": 1.5,
-    "dimensions": {
-      "length": 10,
-      "width": 5,
-      "height": 3
-    },
-    "images": ["image1.jpg", "image2.jpg"],
-    "tags": ["electronics", "gadget"],
-    "metaTitle": "SEO Title",
-    "metaDescription": "SEO Description",
-    "status": "ACTIVE",
-    "visibility": "PUBLIC",
-    "viewCount": 150,
-    "salesCount": 25,
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-01T00:00:00.000Z"
-  }
-}
-```
-
-### Get Products with Filtering
-
-**GET** `/api/v1/products`
-
-**Query Parameters:**
-
-- `page`: Page number (default: 1)
-- `limit`: Items per page (default: 20, max: 100)
-- `category_id`: Filter by category ID
-- `seller_id`: Filter by seller ID
-- `min_price`: Minimum price filter
-- `max_price`: Maximum price filter
-- `status`: Filter by status (ACTIVE, INACTIVE, DRAFT)
-- `visibility`: Filter by visibility (PUBLIC, PRIVATE, UNLISTED)
-- `search`: Search in name and description
-- `sort_by`: Sort field (name, price, created_at, view_count, sales_count)
-- `sort_order`: Sort order (asc, desc)
-- `tags`: Filter by tags (comma-separated)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "products": [
-      {
-        "id": "uuid",
-        "name": "Product Name",
-        "slug": "product-name",
-        "description": "Product description",
-        "sellerId": "seller_uuid",
-        "categoryId": "category_uuid",
-        "basePrice": 99.99,
-        "discountPrice": 79.99,
-        "currency": "USD",
-        "stockQuantity": 100,
-        "images": ["image1.jpg"],
-        "status": "ACTIVE",
-        "visibility": "PUBLIC",
-        "viewCount": 150,
-        "salesCount": 25,
-        "createdAt": "2024-01-01T00:00:00.000Z"
-      }
-    ],
-    "pagination": {
-      "currentPage": 1,
-      "totalPages": 5,
-      "totalItems": 100,
-      "itemsPerPage": 20,
-      "hasNextPage": true,
-      "hasPreviousPage": false
-    }
-  }
-}
-```
-
-### Create Product
-
-**POST** `/api/v1/products`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Required Roles:** SELLER, ADMIN
-
-**Request Body:**
-
-```json
-{
-  "name": "Product Name",
-  "description": "Detailed product description",
-  "shortDescription": "Brief description", // Optional
-  "categoryId": "category_uuid",
-  "basePrice": 99.99,
-  "discountPrice": 79.99, // Optional
-  "currency": "USD", // Optional, defaults to USD
-  "stockQuantity": 100,
-  "lowStockThreshold": 10, // Optional
-  "sku": "PROD-001", // Optional
-  "weight": 1.5, // Optional
-  "dimensions": {
-    // Optional
-    "length": 10,
-    "width": 5,
-    "height": 3
-  },
-  "images": ["image1.jpg", "image2.jpg"], // Optional
-  "tags": ["electronics", "gadget"], // Optional
-  "metaTitle": "SEO Title", // Optional
-  "metaDescription": "SEO Description", // Optional
-  "status": "ACTIVE", // Optional: ACTIVE, INACTIVE, DRAFT
-  "visibility": "PUBLIC" // Optional: PUBLIC, PRIVATE, UNLISTED
-}
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "id": "uuid",
-    "name": "Product Name",
-    "slug": "product-name",
-    "description": "Detailed product description",
-    "sellerId": "seller_uuid",
-    "categoryId": "category_uuid",
-    "basePrice": 99.99,
-    "discountPrice": 79.99,
-    "currency": "USD",
-    "stockQuantity": 100,
-    "status": "ACTIVE",
-    "visibility": "PUBLIC",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "message": "Product created successfully"
-  }
-}
-```
-
-### Update Product
-
-**PUT** `/api/v1/products/:id`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Required Roles:** SELLER (own products), ADMIN (any product)
-
-**URL Parameters:**
-
-- `id`: Product ID (UUID)
-
-**Request Body:** Same as Create Product (all fields optional)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Product updated successfully",
-    "productId": "uuid"
-  }
-}
-```
-
-### Delete Product
-
-**DELETE** `/api/v1/products/:id`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Required Roles:** SELLER (own products), ADMIN (any product)
-
-**URL Parameters:**
-
-- `id`: Product ID (UUID)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Product deleted successfully",
-    "productId": "uuid"
-  }
-}
-```
-
-### Get Seller's Products
-
-**GET** `/api/v1/seller/my-products`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Required Roles:** SELLER, ADMIN
-
-**Query Parameters:** Same as Get Products endpoint
-
-**Response:** Same format as Get Products endpoint
-
----
-
-## Category Management
-
-### Get All Categories
-
-**GET** `/api/v1/categories`
-
-**Query Parameters:**
-
-- `page`: Page number (default: 1)
-- `limit`: Items per page (default: 50, max: 100)
-- `parent_id`: Filter by parent category ID
-- `level`: Filter by category level (0 = root categories)
-- `status`: Filter by status (ACTIVE, INACTIVE)
-- `sort_by`: Sort field (name, level, created_at)
-- `sort_order`: Sort order (asc, desc)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "categories": [
-      {
-        "id": "uuid",
-        "name": "Electronics",
-        "slug": "electronics",
-        "description": "Electronic products",
-        "parentId": null,
-        "level": 0,
-        "status": "ACTIVE",
-        "productCount": 150,
-        "createdAt": "2024-01-01T00:00:00.000Z"
-      }
-    ],
-    "pagination": {
-      "currentPage": 1,
-      "totalPages": 2,
-      "totalItems": 25,
-      "itemsPerPage": 50
-    }
-  }
-}
-```
-
-### Get Category Tree
-
-**GET** `/api/v1/categories/tree`
-
-**Query Parameters:**
-
-- `max_depth`: Maximum depth to retrieve (default: 3)
-- `include_product_count`: Include product count (default: false)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "categories": [
-      {
-        "id": "uuid",
-        "name": "Electronics",
-        "slug": "electronics",
-        "description": "Electronic products",
-        "level": 0,
-        "status": "ACTIVE",
-        "productCount": 150,
-        "children": [
-          {
-            "id": "uuid",
-            "name": "Smartphones",
-            "slug": "smartphones",
-            "level": 1,
-            "status": "ACTIVE",
-            "productCount": 75,
-            "children": []
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-### Get Category by ID
-
-**GET** `/api/v1/categories/:id`
-
-**URL Parameters:**
-
-- `id`: Category ID (UUID)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "id": "uuid",
-    "name": "Electronics",
-    "slug": "electronics",
-    "description": "Electronic products",
-    "parentId": null,
-    "level": 0,
-    "status": "ACTIVE",
-    "productCount": 150,
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-01T00:00:00.000Z"
-  }
-}
-```
-
-### Create Category
-
-**POST** `/api/v1/categories`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Required Roles:** ADMIN
-
-**Request Body:**
-
-```json
-{
-  "name": "Category Name",
-  "description": "Category description", // Optional
-  "parentId": "parent_category_uuid", // Optional
-  "status": "ACTIVE" // Optional: ACTIVE, INACTIVE
-}
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "id": "uuid",
-    "name": "Category Name",
-    "slug": "category-name",
-    "description": "Category description",
-    "parentId": "parent_category_uuid",
-    "level": 1,
-    "status": "ACTIVE",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "message": "Category created successfully"
-  }
-}
-```
-
-### Update Category
-
-**PUT** `/api/v1/categories/:id`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Required Roles:** ADMIN
-
-**URL Parameters:**
-
-- `id`: Category ID (UUID)
-
-**Request Body:** Same as Create Category (all fields optional)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Category updated successfully",
-    "categoryId": "uuid"
-  }
-}
-```
-
-### Delete Category
-
-**DELETE** `/api/v1/categories/:id`
-
-**Headers:**
-
-```
-Authorization: Bearer jwt_token_here
-```
-
-**Required Roles:** ADMIN
-
-**URL Parameters:**
-
-- `id`: Category ID (UUID)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "Category deleted successfully",
-    "categoryId": "uuid"
-  }
-}
-```
-
----
-
-## Page Data Management
+## 🏠 Homepage APIs
 
 ### Get Homepage Data
 
-**GET** `/api/v1/pages/homepage`
+Retrieves categories and featured products for homepage display.
 
-**Query Parameters:**
+**Endpoint:** `GET /api/homepage`
 
-- `category_limit`: Number of categories to return (default: 8, max: 20)
-- `featured_product_limit`: Number of featured products to return (default: 8, max: 50)
-- `include_metadata`: Include metadata (default: true)
-
-**Response:**
+**Headers:**
 
 ```json
 {
-  "success": true,
+  "Content-Type": "application/json"
+}
+```
+
+**Parameters:** None
+
+**Response Type:**
+
+```typescript
+interface HomepageResponse {
+  statusCode: 200;
+  data: {
+    categories: CategoryDto[];
+    featuredProducts: ProductDto[];
+  };
+  message: "Homepage data retrieved successfully";
+  success: true;
+}
+
+interface CategoryDto {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  imageUrl: string | null;
+  level: number;
+  sortOrder: number;
+}
+
+interface ProductDto {
+  id: string;
+  name: string;
+  slug: string;
+  shortDescription: string | null;
+  price: string; // Decimal as string
+  comparePrice: string | null; // Decimal as string
+  primaryImage: string | null;
+  averageRating: string; // Decimal as string
+  reviewCount: number;
+  hasDiscount: boolean;
+  discountPercentage: number;
+  isAvailable: boolean;
+}
+```
+
+**Example Request:**
+
+```bash
+curl -X GET http://localhost:5000/api/homepage \
+  -H "Content-Type: application/json"
+```
+
+**Example Response:**
+
+```json
+{
+  "statusCode": 200,
   "data": {
     "categories": [
       {
-        "id": "uuid",
+        "id": "942682d2-d260-48f5-8f3d-988899c94ad6",
         "name": "Electronics",
         "slug": "electronics",
-        "description": "Electronic products and gadgets",
-        "image": "electronics.jpg",
-        "productCount": 150
+        "description": "Latest electronic devices and gadgets",
+        "imageUrl": null,
+        "level": 0,
+        "sortOrder": 0
       }
     ],
-    "products": {
-      "featured": [
-        {
-          "id": "uuid",
-          "name": "iPhone 15 Pro",
-          "slug": "iphone-15-pro",
-          "basePrice": 999.99,
-          "discountPrice": 899.99,
-          "currency": "USD",
-          "images": ["iphone1.jpg", "iphone2.jpg"],
-          "categoryName": "Smartphones",
-          "sellerName": "Apple Store",
-          "sellerRating": 4.8,
-          "viewCount": 1250,
-          "salesCount": 45,
-          "rating": 4.9,
-          "reviewCount": 128
-        }
-      ]
-    },
-    "metadata": {
-      "totalCategories": 25,
-      "totalProducts": 1500,
-      "lastUpdated": "2024-01-01T12:00:00.000Z",
-      "cacheExpiry": "2024-01-01T12:15:00.000Z"
-    }
+    "featuredProducts": [
+      {
+        "id": "7cb4608c-9c14-4cf6-8d23-f52e937770c0",
+        "name": "iPhone 15 Pro",
+        "slug": "iphone-15-pro",
+        "shortDescription": "Premium smartphone with cutting-edge technology",
+        "price": "999.99",
+        "comparePrice": "1099.99",
+        "primaryImage": "https://example.com/iphone15pro-1.jpg",
+        "averageRating": "0.00",
+        "reviewCount": 0,
+        "hasDiscount": false,
+        "discountPercentage": 0,
+        "isAvailable": true
+      }
+    ]
   },
-  "message": "Homepage data retrieved successfully"
+  "message": "Homepage data retrieved successfully",
+  "success": true
 }
 ```
 
-## Error Response Format
+**Error Responses:**
 
-All endpoints return errors in this format:
+- `500` - Internal server error
+- `503` - Database connection error
+
+---
+
+## 🔧 Health Check APIs
+
+### Server Health Check
+
+Check if the server is running.
+
+**Endpoint:** `GET /health`
+
+**Headers:** None required
+
+**Parameters:** None
+
+**Response Type:**
+
+```typescript
+interface HealthResponse {
+  status: "OK";
+  timestamp: string; // ISO date string
+  service: "e-commerce-backend";
+}
+```
+
+**Example Response:**
 
 ```json
 {
-  "success": false,
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "Error description",
-    "details": [] // Optional validation details
-  }
+  "status": "OK",
+  "timestamp": "2025-09-29T16:57:40.689Z",
+  "service": "e-commerce-backend"
 }
 ```
 
-## Common HTTP Status Codes
+### Database Health Check
 
-- `200` - Success
-- `201` - Created
-- `400` - Bad Request (Validation Error)
+Check database connection status.
+
+**Endpoint:** `GET /health/db`
+
+**Headers:** None required
+
+**Parameters:** None
+
+**Response Type:**
+
+```typescript
+interface DatabaseHealthResponse {
+  status: "OK" | "ERROR";
+  database: "PostgreSQL";
+  connection: string;
+  timestamp: string; // ISO date string
+}
+```
+
+**Example Response:**
+
+```json
+{
+  "status": "OK",
+  "database": "PostgreSQL",
+  "connection": "PostgreSQL Database Service - Pool size: 5/10",
+  "timestamp": "2025-09-29T16:57:40.689Z"
+}
+```
+
+---
+
+## 📝 Frontend Integration Guide
+
+### TypeScript Types
+
+Copy these types to your frontend project:
+
+```typescript
+// API Response Types
+export interface ApiResponse<T> {
+  statusCode: number;
+  data: T;
+  message: string;
+  success: true;
+}
+
+export interface ApiError {
+  statusCode: number;
+  message: string;
+  errors: any[];
+  success: false;
+}
+
+// Homepage Types
+export interface HomepageData {
+  categories: CategoryDto[];
+  featuredProducts: ProductDto[];
+}
+
+export interface CategoryDto {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  imageUrl: string | null;
+  level: number;
+  sortOrder: number;
+}
+
+export interface ProductDto {
+  id: string;
+  name: string;
+  slug: string;
+  shortDescription: string | null;
+  price: string;
+  comparePrice: string | null;
+  primaryImage: string | null;
+  averageRating: string;
+  reviewCount: number;
+  hasDiscount: boolean;
+  discountPercentage: number;
+  isAvailable: boolean;
+}
+```
+
+### Example Frontend Usage
+
+#### React/Next.js Example
+
+```typescript
+import { ApiResponse, HomepageData } from "./types/api";
+
+export async function getHomepageData(): Promise<HomepageData> {
+  const response = await fetch("http://localhost:5000/api/homepage", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const result: ApiResponse<HomepageData> = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.message);
+  }
+
+  return result.data;
+}
+
+// Usage in component
+const HomePage = () => {
+  const [data, setData] = useState<HomepageData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getHomepageData()
+      .then(setData)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data) return <div>No data</div>;
+
+  return (
+    <div>
+      <h1>Categories</h1>
+      {data.categories.map((category) => (
+        <div key={category.id}>{category.name}</div>
+      ))}
+
+      <h1>Featured Products</h1>
+      {data.featuredProducts.map((product) => (
+        <div key={product.id}>
+          <h3>{product.name}</h3>
+          <p>{product.shortDescription}</p>
+          <span>${product.price}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+```
+
+#### Axios Example
+
+```typescript
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:5000",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+export const homepageApi = {
+  getHomepageData: async (): Promise<HomepageData> => {
+    const response = await api.get<ApiResponse<HomepageData>>("/api/homepage");
+    return response.data.data;
+  },
+};
+```
+
+---
+
+## 🚀 Future API Additions
+
+When adding new APIs, please follow this format:
+
+### API Name
+
+Brief description of what the API does.
+
+**Endpoint:** `METHOD /api/path`
+
+**Headers:**
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>" // if auth required
+}
+```
+
+**Parameters:**
+
+- `param1` (string, required) - Description
+- `param2` (number, optional) - Description
+
+**Request Body:** (if applicable)
+
+```typescript
+interface RequestBody {
+  field1: string;
+  field2: number;
+}
+```
+
+**Response Type:**
+
+```typescript
+interface ResponseType {
+  // Define response structure
+}
+```
+
+**Example Request:**
+
+```bash
+curl -X METHOD http://localhost:5000/api/path \
+  -H "Content-Type: application/json" \
+  -d '{"field1": "value"}'
+```
+
+**Example Response:**
+
+```json
+{
+  "statusCode": 200,
+  "data": {},
+  "message": "Success message",
+  "success": true
+}
+```
+
+**Error Responses:**
+
+- `400` - Bad request
 - `401` - Unauthorized
-- `403` - Forbidden
-- `404` - Not Found
-- `429` - Too Many Requests
-- `500` - Internal Server Error
+- `404` - Not found
+- `500` - Internal server error
+
+---
+
+## 📋 Status Codes
+
+| Code | Description                                     |
+| ---- | ----------------------------------------------- |
+| 200  | OK - Request successful                         |
+| 201  | Created - Resource created successfully         |
+| 400  | Bad Request - Invalid request parameters        |
+| 401  | Unauthorized - Authentication required          |
+| 403  | Forbidden - Access denied                       |
+| 404  | Not Found - Resource not found                  |
+| 409  | Conflict - Resource already exists              |
+| 422  | Unprocessable Entity - Validation error         |
+| 500  | Internal Server Error - Server error            |
+| 503  | Service Unavailable - Database connection error |
+
+---
+
+## 🔄 Changelog
+
+### v1.0.0 (Current)
+
+- ✅ Homepage API (`GET /api/homepage`)
+- ✅ Health check APIs (`GET /health`, `GET /health/db`)
+- ✅ Standard response format
+- ✅ TypeScript type definitions
+
+### Future Versions
+
+- 🔄 Authentication APIs
+- 🔄 Product catalog APIs
+- 🔄 User management APIs
+- 🔄 Order management APIs
+- 🔄 Cart APIs
+
+---
+
+_Last updated: September 29, 2025_ _API Version: 1.0.0_ _Backend Version: 1.0.0_
