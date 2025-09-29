@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
     const configService = new ConfigService();
     const httpService = new ServerHttpService(configService, {});
 
-    const homepageService = new HomepageService(httpService);
+    const homepageService = new HomepageService(httpService, configService);
     const homepageData = await homepageService.getHomepageData();
 
     // Transform backend data to frontend format

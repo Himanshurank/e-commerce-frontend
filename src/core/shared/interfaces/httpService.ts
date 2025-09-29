@@ -61,3 +61,16 @@ export interface IHttpClientConfig {
   errorInterceptors?: ErrorInterceptor[];
 }
 
+export interface ApiResponse<T> {
+  statusCode: number;
+  data: T;
+  message: string;
+  success: true;
+}
+
+export interface ApiError {
+  statusCode: number;
+  message: string;
+  errors: any[];
+  success: false;
+}

@@ -8,7 +8,8 @@ import SignUpModal from "@/components/molecules/sign-up-modal";
 import Button from "@/components/atoms/button";
 import Icon from "@/components/atoms/icon";
 import Typography from "@/components/atoms/typography";
-import { authService, User } from "@/core/shared/services/auth.service";
+import { authService } from "@/core/shared/services/auth.service";
+import { User } from "@/core/shared/interfaces/auth";
 
 interface IProps {
   className?: string;
@@ -62,7 +63,7 @@ const Header = (props: IProps) => {
     ];
 
     // Only show "Sell on ECommerce" if user is not logged in or not a seller
-    if (!isAuthenticated || (user && user.role !== "SELLER")) {
+    if (!isAuthenticated || (user && user.role !== "seller")) {
       baseItems.push({ href: "/sellers", label: "Sell on ECommerce" });
     }
 
@@ -75,7 +76,7 @@ const Header = (props: IProps) => {
       { href: "/dashboard/orders", label: "My Orders", icon: "shopping-bag" },
     ];
 
-    if (userRole === "SELLER") {
+    if (userRole === "seller") {
       return [
         ...baseItems,
         { href: "/dashboard/seller", label: "Seller Dashboard", icon: "store" },
@@ -149,7 +150,13 @@ const Header = (props: IProps) => {
 
   const handleLogout = async () => {
     try {
-      await authService.logout();
+      // Clear local auth data
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("user");
+      }
+      document.cookie =
+        "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
       setIsAuthenticated(false);
       setUser(null);
     } catch (error) {

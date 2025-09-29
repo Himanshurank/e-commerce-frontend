@@ -43,7 +43,10 @@ export interface IAppConfig {
 }
 
 export interface IApiPaths {
-  auth: string;
+  signup: string;
+  signin: string;
+  profile: string;
+  logout: string;
   homepage: string;
 }
 

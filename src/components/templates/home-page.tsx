@@ -8,7 +8,8 @@ import { ClientHttpService } from "@/core/shared/services/httpServiceClient";
 import { ConfigService } from "@/core/shared/services/configService";
 import { IHomePageProps } from "@/core/modules/homepage/types";
 import PageContainer from "../layouts/pageContainer";
-import { authService, User } from "@/core/shared/services/auth.service";
+import { authService } from "@/core/shared/services/auth.service";
+import { User } from "@/core/shared/interfaces/auth";
 
 const HomePage = (props: IHomePageProps) => {
   const { className, categories, featuredProducts, stats } = props;
@@ -107,7 +108,7 @@ const HomePage = (props: IHomePageProps) => {
         <HeroSection
           onShopNowClick={handleShopNowClick}
           onBecomeSellerClick={
-            !isAuthenticated || (user && user.role !== "SELLER")
+            !isAuthenticated || (user && user.role !== "seller")
               ? handleBecomeSellerClick
               : undefined
           }

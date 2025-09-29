@@ -83,7 +83,10 @@ export class ConfigService implements IConfigService {
 
   getApiPaths(): IApiPaths {
     return {
-      auth: "auth",
+      signup: "auth/signup",
+      signin: "auth/signin",
+      profile: "auth/profile",
+      logout: "auth/logout",
       homepage: "homepage",
     };
   }

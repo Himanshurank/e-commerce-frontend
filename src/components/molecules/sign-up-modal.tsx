@@ -4,15 +4,14 @@ import Button from "@/components/atoms/button";
 import Input from "@/components/atoms/input";
 import Typography from "@/components/atoms/typography";
 import Icon from "@/components/atoms/icon";
-import {
-  authService,
-  RegisterRequest,
-} from "@/core/shared/services/auth.service";
+import { authService } from "@/core/shared/services/auth.service";
+import { SignupRequest, SignupResponse } from "@/core/shared/interfaces/auth";
+import { ApiResponse } from "@/core/shared/interfaces/httpService";
 
 interface ISignUpModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSignUpSuccess?: (user: any) => void; // Called when registration is successful
+  onSignUpSuccess?: (user: SignupResponse) => void; // Called when signup is successful
   onSwitchToSignIn?: () => void;
   className?: string;
 }
@@ -27,7 +26,8 @@ const SignUpModal = (props: ISignUpModalProps) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const role = "CUSTOMER"; // Fixed role for customer registration
+  const [phone, setPhone] = useState<string>("");
+  const role = "customer"; // Fixed role for customer registration
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<{
     firstName?: string;
@@ -68,8 +68,11 @@ const SignUpModal = (props: ISignUpModalProps) => {
 
     if (!password) {
       newErrors.password = "Password is required";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      newErrors.password =
+        "Password must contain uppercase, lowercase, and number";
     }
 
     if (!confirmPassword) {
@@ -93,20 +96,22 @@ const SignUpModal = (props: ISignUpModalProps) => {
     setIsLoading(true);
 
     try {
-      const registerData: RegisterRequest = {
+      const signupData: SignupRequest = {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         email,
         password,
-        role: "CUSTOMER",
+        phone: phone.trim() || undefined,
+        role: "customer",
       };
 
-      const response = await authService.register(registerData);
+      const response: ApiResponse<SignupResponse> =
+        await authService.signup(signupData);
 
       if (response.success) {
         // Call success callback if provided
         if (onSignUpSuccess) {
-          onSignUpSuccess(response.data.user);
+          onSignUpSuccess(response.data);
         }
 
         // Reset form on success
@@ -115,38 +120,37 @@ const SignUpModal = (props: ISignUpModalProps) => {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
+        setPhone("");
         setErrors({});
         onClose();
 
-        // Show success message or redirect as needed
-        console.log("Registration successful:", response.data.message);
-      } else {
-        setErrors({ email: "Registration failed. Please try again." });
+        // Show success message
+        console.log("Signup successful:", response.message);
       }
     } catch (error: any) {
       console.error("Sign up error:", error);
 
-      // Handle specific API errors
-      if (error.response?.data?.error) {
-        const apiError = error.response.data.error;
-        if (apiError.code === "EMAIL_ALREADY_EXISTS") {
-          setErrors({ email: "An account with this email already exists." });
-        } else if (apiError.details && Array.isArray(apiError.details)) {
-          // Handle validation errors from backend
+      // Handle specific API errors based on backend structure
+      let errorMessage = "Signup failed. Please try again.";
+
+      if (error?.statusCode === 409) {
+        errorMessage = "An account with this email already exists.";
+        setErrors({ email: errorMessage });
+      } else if (error?.statusCode === 400) {
+        // Handle validation errors
+        if (error.errors && Array.isArray(error.errors)) {
           const newErrors: any = {};
-          apiError.details.forEach((detail: any) => {
-            if (detail.field) {
-              newErrors[detail.field] = detail.message;
+          error.errors.forEach((err: any) => {
+            if (err.field) {
+              newErrors[err.field] = err.message;
             }
           });
           setErrors(newErrors);
         } else {
-          setErrors({
-            email: apiError.message || "Registration failed. Please try again.",
-          });
+          setErrors({ email: error.message || errorMessage });
         }
       } else {
-        setErrors({ email: "Registration failed. Please try again." });
+        setErrors({ email: error.message || errorMessage });
       }
     } finally {
       setIsLoading(false);
@@ -159,6 +163,7 @@ const SignUpModal = (props: ISignUpModalProps) => {
     setEmail("");
     setPassword("");
     setConfirmPassword("");
+    setPhone("");
     setErrors({});
     onClose();
   };
@@ -255,6 +260,23 @@ const SignUpModal = (props: ISignUpModalProps) => {
         )}
       </div>
 
+      {/* Phone Input */}
+      <div>
+        <label
+          htmlFor="phone"
+          className="block text-sm font-medium text-neutral-700 mb-2"
+        >
+          Phone Number (Optional)
+        </label>
+        <Input
+          type="text"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="+1234567890"
+          className="w-full"
+        />
+      </div>
+
       {/* Password Fields */}
       <div>
         <label
@@ -275,6 +297,9 @@ const SignUpModal = (props: ISignUpModalProps) => {
             {errors.password}
           </Typography>
         )}
+        <Typography variant="caption" className="text-neutral-500 mt-1">
+          Must be 8+ characters with uppercase, lowercase, and number
+        </Typography>
       </div>
 
       <div>

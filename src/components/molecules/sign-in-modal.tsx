@@ -4,7 +4,8 @@ import Button from "@/components/atoms/button";
 import Input from "@/components/atoms/input";
 import Typography from "@/components/atoms/typography";
 import Icon from "@/components/atoms/icon";
-import { authService, LoginRequest } from "@/core/shared/services/auth.service";
+import { authService } from "@/core/shared/services/auth.service";
+import { LoginRequest } from "@/core/shared/interfaces/auth";
 
 interface ISignInModalProps {
   isOpen: boolean;
@@ -67,7 +68,7 @@ const SignInModal = (props: ISignInModalProps) => {
         password,
       };
 
-      const response = await authService.login(loginData);
+      const response = await authService.signin(loginData);
 
       if (response.success) {
         // Call success callback if provided

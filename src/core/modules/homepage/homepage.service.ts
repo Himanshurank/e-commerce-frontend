@@ -1,19 +1,16 @@
 import { IHttpService } from "@/core/shared/interfaces/httpService";
+import { IConfigService } from "@/core/shared/interfaces/config";
 import { ApiResponse, HomepageData, CategoryDto, ProductDto } from "./types";
 
-/**
- * Homepage service for handling homepage-related API calls
- */
 export class HomepageService {
-  constructor(private readonly httpService: IHttpService) {}
+  constructor(
+    private readonly httpService: IHttpService,
+    private readonly configService: IConfigService
+  ) {}
 
-  /**
-   * Fetch homepage data from backend API
-   * @returns Promise<HomepageData>
-   */
   async getHomepageData(): Promise<HomepageData> {
     const response = await this.httpService.get<ApiResponse<HomepageData>>({
-      path: "/api/homepage",
+      path: this.configService.getApiPaths().homepage,
     });
     if (!response.success) {
       throw new Error(response.message || "Failed to fetch homepage data");
