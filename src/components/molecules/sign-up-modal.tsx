@@ -5,7 +5,11 @@ import Input from "@/components/atoms/input";
 import Typography from "@/components/atoms/typography";
 import Icon from "@/components/atoms/icon";
 import { authService } from "@/core/shared/services/auth.service";
-import { SignupRequest, SignupResponse } from "@/core/shared/interfaces/auth";
+import {
+  SignupRequest,
+  SignupResponse,
+  SigninRequest,
+} from "@/core/shared/interfaces/auth";
 import { ApiResponse } from "@/core/shared/interfaces/httpService";
 
 interface ISignUpModalProps {
@@ -109,23 +113,67 @@ const SignUpModal = (props: ISignUpModalProps) => {
         await authService.signup(signupData);
 
       if (response.success) {
-        // Call success callback if provided
-        if (onSignUpSuccess) {
-          onSignUpSuccess(response.data);
+        // Automatically sign in the user after successful signup
+        try {
+          const signinData: SigninRequest = {
+            email,
+            password,
+          };
+          const signinResponse = await authService.signin(signinData);
+
+          if (signinResponse.success) {
+            // Call success callback with signed-in user data
+            if (onSignUpSuccess) {
+              onSignUpSuccess(response.data);
+            }
+
+            // Reset form on success
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            setPhone("");
+            setErrors({});
+            onClose();
+
+            console.log("Signup and auto-signin successful:", response.message);
+          } else {
+            // Signup successful but auto-signin failed, still close modal
+            if (onSignUpSuccess) {
+              onSignUpSuccess(response.data);
+            }
+
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            setPhone("");
+            setErrors({});
+            onClose();
+
+            console.log(
+              "Signup successful, but auto-signin failed. Please sign in manually."
+            );
+          }
+        } catch (signinError) {
+          // Signup successful but auto-signin failed
+          console.warn("Auto-signin failed after signup:", signinError);
+
+          if (onSignUpSuccess) {
+            onSignUpSuccess(response.data);
+          }
+
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          setPhone("");
+          setErrors({});
+          onClose();
         }
-
-        // Reset form on success
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-        setPhone("");
-        setErrors({});
-        onClose();
-
-        // Show success message
-        console.log("Signup successful:", response.message);
       }
     } catch (error: any) {
       console.error("Sign up error:", error);

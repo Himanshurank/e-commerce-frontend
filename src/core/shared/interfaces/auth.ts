@@ -25,6 +25,34 @@ export interface LoginRequest {
   rememberMe?: boolean;
 }
 
+export interface SigninRequest {
+  email: string;
+  password: string;
+}
+
+export interface SigninResponse {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string | null;
+  role: "customer" | "seller" | "admin";
+  status: "pending" | "approved" | "rejected" | "suspended";
+  emailVerified: boolean;
+  createdAt: string;
+  token?: string;
+}
+
+export interface LogoutRequest {
+  userId?: string;
+}
+
+export interface LogoutResponse {
+  success: boolean;
+  message: string;
+  loggedOutAt: string;
+}
+
 export interface User {
   id: string;
   email: string;

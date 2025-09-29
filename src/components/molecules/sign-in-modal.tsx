@@ -5,7 +5,7 @@ import Input from "@/components/atoms/input";
 import Typography from "@/components/atoms/typography";
 import Icon from "@/components/atoms/icon";
 import { authService } from "@/core/shared/services/auth.service";
-import { LoginRequest } from "@/core/shared/interfaces/auth";
+import { SigninRequest } from "@/core/shared/interfaces/auth";
 
 interface ISignInModalProps {
   isOpen: boolean;
@@ -63,17 +63,17 @@ const SignInModal = (props: ISignInModalProps) => {
     setIsLoading(true);
 
     try {
-      const loginData: LoginRequest = {
+      const signinData: SigninRequest = {
         email,
         password,
       };
 
-      const response = await authService.signin(loginData);
+      const response = await authService.signin(signinData);
 
       if (response.success) {
         // Call success callback if provided
         if (onSignInSuccess) {
-          onSignInSuccess(response.data.user);
+          onSignInSuccess(response.data);
         }
 
         // Reset form on success
@@ -83,7 +83,7 @@ const SignInModal = (props: ISignInModalProps) => {
         onClose();
 
         // Show success message or redirect as needed
-        console.log("Login successful:", response.data.message);
+        console.log("Signin successful:", response.message);
       } else {
         setErrors({ email: "Invalid email or password" });
       }

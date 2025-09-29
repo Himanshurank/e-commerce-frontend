@@ -150,17 +150,15 @@ const Header = (props: IProps) => {
 
   const handleLogout = async () => {
     try {
-      // Clear local auth data
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("user");
-      }
-      document.cookie =
-        "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
+      await authService.logout();
       setIsAuthenticated(false);
       setUser(null);
+      console.log("Logout successful");
     } catch (error) {
       console.error("Logout error:", error);
+      // Still clear local state even if API call fails
+      setIsAuthenticated(false);
+      setUser(null);
     }
   };
 

@@ -4,7 +4,10 @@ import { ApiResponse } from "../interfaces/httpService";
 import {
   SignupRequest,
   SignupResponse,
-  LoginRequest,
+  SigninRequest,
+  SigninResponse,
+  LogoutRequest,
+  LogoutResponse,
   User,
 } from "../interfaces/auth";
 import Cookies from "js-cookie";
@@ -31,16 +34,42 @@ class AuthService {
     return response;
   }
 
-  async signin(data: LoginRequest): Promise<any> {
-    const response = await this.httpService.post<any>({
+  async signin(data: SigninRequest): Promise<ApiResponse<SigninResponse>> {
+    const response = await this.httpService.post<ApiResponse<SigninResponse>>({
       path: this.configService.getApiPaths().signin,
       body: data,
     });
 
-    if (response.success && response.token) {
-      this.setAuthToken(response.token);
-      this.setUser(response.user);
+    if (response.success) {
+      // Store user data
+      this.setUser(response.data);
+
+      // Set auth token if provided (future implementation)
+      if (response.data.token) {
+        this.setAuthToken(response.data.token);
+      } else {
+        // For now, create a simple session token since backend doesn't provide JWT yet
+        const sessionToken = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        this.setAuthToken(sessionToken);
+      }
     }
+
+    return response;
+  }
+
+  async logout(): Promise<ApiResponse<LogoutResponse>> {
+    const user = this.getUser();
+    const logoutData: LogoutRequest = {
+      userId: user?.id,
+    };
+
+    const response = await this.httpService.post<ApiResponse<LogoutResponse>>({
+      path: this.configService.getApiPaths().logout,
+      body: logoutData,
+    });
+
+    // Clear local auth data regardless of API response
+    this.clearAuth();
 
     return response;
   }
@@ -78,6 +107,19 @@ class AuthService {
     if (typeof window !== "undefined") {
       localStorage.setItem("user", JSON.stringify(user));
     }
+  }
+
+  private clearAuth(): void {
+    // Remove auth token cookie
+    Cookies.remove("auth_token", { path: "/" });
+
+    // Remove user data from localStorage
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("user");
+    }
+
+    // Remove authorization token from HTTP service
+    this.httpService.removeAuthToken();
   }
 }
 
