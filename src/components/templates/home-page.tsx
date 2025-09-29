@@ -4,7 +4,8 @@ import HeroSection from "../organisms/hero-section";
 import CategoryGrid from "../organisms/category-grid";
 import ProductGrid from "../organisms/product-grid";
 import NewsletterSection from "../organisms/newsletter-section";
-import { getClientHttpService } from "@/core/shared/factories/http-service.factory";
+import { ClientHttpService } from "@/core/shared/services/httpServiceClient";
+import { ConfigService } from "@/core/shared/services/configService";
 import { IHomePageProps } from "@/core/modules/homepage/types";
 import PageContainer from "../layouts/pageContainer";
 import { authService, User } from "@/core/shared/services/auth.service";
@@ -30,7 +31,8 @@ const HomePage = (props: IHomePageProps) => {
   const handleAddToCart = async (productId: string) => {
     try {
       // Use client-side HTTP service to add to cart
-      const httpService = getClientHttpService();
+      const configService = new ConfigService();
+      const httpService = new ClientHttpService(configService);
 
       await httpService.post({
         path: "/cart/add",
@@ -83,7 +85,8 @@ const HomePage = (props: IHomePageProps) => {
   const handleNewsletterSubscribe = async (email: string) => {
     try {
       // Use client-side HTTP service for newsletter subscription
-      const httpService = getClientHttpService();
+      const configService = new ConfigService();
+      const httpService = new ClientHttpService(configService);
 
       await httpService.post({
         path: "/newsletter/subscribe",

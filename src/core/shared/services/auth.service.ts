@@ -1,5 +1,5 @@
-import { ClientHttpService } from "./client-http.service";
-import { ConfigService } from "./config.service";
+import { ClientHttpService } from "./httpServiceClient";
+import { ConfigService } from "./configService";
 import Cookies from "js-cookie";
 
 // Types based on backend API reference
@@ -80,7 +80,7 @@ class AuthService {
   async register(data: RegisterRequest): Promise<AuthResponse> {
     try {
       const response = await this.httpService.post<AuthResponse>({
-        path: this.configService.getApiPaths().auth.register,
+        path: `${this.configService.getApiPaths().auth}/register`,
         body: data,
       });
 
@@ -103,7 +103,7 @@ class AuthService {
   async login(data: LoginRequest): Promise<AuthResponse> {
     try {
       const response = await this.httpService.post<AuthResponse>({
-        path: this.configService.getApiPaths().auth.login,
+        path: `${this.configService.getApiPaths().auth}/login`,
         body: data,
       });
 
@@ -126,7 +126,7 @@ class AuthService {
   async logout(): Promise<void> {
     try {
       await this.httpService.post({
-        path: this.configService.getApiPaths().auth.logout,
+        path: `${this.configService.getApiPaths().auth}/logout`,
         body: {},
       });
     } catch (error) {
@@ -143,7 +143,7 @@ class AuthService {
   async getProfile(): Promise<any> {
     try {
       return await this.httpService.get({
-        path: this.configService.getApiPaths().auth.profile,
+        path: `${this.configService.getApiPaths().auth}/profile`,
       });
     } catch (error) {
       console.error("Get profile error:", error);
@@ -164,9 +164,7 @@ class AuthService {
     });
 
     // Set token for future requests
-    this.httpService.setDefaultHeaders({
-      Authorization: `Bearer ${token}`,
-    });
+    this.httpService.setAuthToken(token);
   }
 
   /**
@@ -215,8 +213,8 @@ class AuthService {
       localStorage.removeItem("user");
     }
 
-    // Remove authorization header
-    this.httpService.removeDefaultHeader("Authorization");
+    // Remove authorization token
+    this.httpService.removeAuthToken();
   }
 
   /**
@@ -225,9 +223,7 @@ class AuthService {
   initialize(): void {
     const token = this.getAuthToken();
     if (token) {
-      this.httpService.setDefaultHeaders({
-        Authorization: `Bearer ${token}`,
-      });
+      this.httpService.setAuthToken(token);
     }
   }
 

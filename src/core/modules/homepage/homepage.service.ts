@@ -1,4 +1,4 @@
-import { IHttpService } from "@/core/shared/interfaces/http.interface";
+import { IHttpService } from "@/core/shared/interfaces/httpService";
 import { ApiResponse, HomepageData, CategoryDto, ProductDto } from "./types";
 
 /**

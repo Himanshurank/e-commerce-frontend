@@ -1,27 +1,18 @@
 import { GetServerSideProps } from "next";
 import HomePage from "@/components/templates/home-page";
-import { getServerHttpService } from "@/core/shared/factories/http-service.factory";
 import { IHomePageProps } from "@/core/modules/homepage/types";
-import { ConfigService } from "@/core/shared/services/config.service";
 import { HomepageService } from "@/core/modules/homepage/homepage.service";
+import { ServerHttpService } from "@/core/shared/services/httpServiceServer";
+import { ConfigService } from "@/core/shared/services/configService";
 import PageContainer from "@/components/layouts/pageContainer";
 
 export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
   context
 ) => {
   try {
-    // Get server-side HTTP service
     const configService = new ConfigService();
-    const httpService = getServerHttpService({
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "X-Server-Request": "true",
-      "X-Request-ID": `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      "User-Agent":
-        context.req.headers["user-agent"] || "ECommerce-Server/1.0.0",
-    });
+    const httpService = new ServerHttpService(configService, {});
 
-    // Use the homepage service to fetch data
     const homepageService = new HomepageService(httpService);
     const homepageData = await homepageService.getHomepageData();
 
@@ -37,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
     const stats = {
       totalProducts: featuredProducts.length,
       totalSuppliers: categories.length,
-      totalCountries: 190, // Static value as not provided by API
+      totalCountries: 190,
     };
 
     return {
