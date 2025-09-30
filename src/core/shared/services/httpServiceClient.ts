@@ -6,6 +6,7 @@ import {
   TimeoutError,
   AuthenticationError,
 } from "../errors/api-error";
+import Cookies from "js-cookie";
 
 export class ClientHttpService implements IHttpService {
   private baseUrl: string;
@@ -147,7 +148,7 @@ export class ClientHttpService implements IHttpService {
   }
 
   private getAuthHeaders(): Record<string, string> {
-    const token = localStorage.getItem("authToken");
+    const token = Cookies.get("auth_token");
     return token ? { Authorization: `Bearer ${token}` } : {};
   }
 
@@ -162,7 +163,7 @@ export class ClientHttpService implements IHttpService {
     // Handle specific status codes
     if (response.status === 401) {
       // Clear auth and redirect to login
-      localStorage.removeItem("authToken");
+      Cookies.remove("auth_token", { path: "/" });
       if (typeof window !== "undefined") {
         window.location.href = "/login";
       }
@@ -201,15 +202,20 @@ export class ClientHttpService implements IHttpService {
 
   // Utility methods for authentication
   setAuthToken(token: string): void {
-    localStorage.setItem("authToken", token);
+    Cookies.set("auth_token", token, {
+      expires: 7,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+    });
   }
 
   removeAuthToken(): void {
-    localStorage.removeItem("authToken");
+    Cookies.remove("auth_token", { path: "/" });
   }
 
   getAuthToken(): string | null {
-    return localStorage.getItem("authToken");
+    return Cookies.get("auth_token") || null;
   }
 
   isAuthenticated(): boolean {

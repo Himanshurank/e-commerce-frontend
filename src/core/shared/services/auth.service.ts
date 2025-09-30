@@ -75,11 +75,8 @@ class AuthService {
   }
 
   getUser(): User | null {
-    if (typeof window !== "undefined") {
-      const userStr = localStorage.getItem("user");
-      return userStr ? JSON.parse(userStr) : null;
-    }
-    return null;
+    const userStr = Cookies.get("user_data");
+    return userStr ? JSON.parse(userStr) : null;
   }
 
   getAuthToken(): string | null {
@@ -104,19 +101,20 @@ class AuthService {
   }
 
   private setUser(user: User): void {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("user", JSON.stringify(user));
-    }
+    Cookies.set("user_data", JSON.stringify(user), {
+      expires: 7,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+    });
   }
 
   private clearAuth(): void {
     // Remove auth token cookie
     Cookies.remove("auth_token", { path: "/" });
 
-    // Remove user data from localStorage
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("user");
-    }
+    // Remove user data cookie
+    Cookies.remove("user_data", { path: "/" });
 
     // Remove authorization token from HTTP service
     this.httpService.removeAuthToken();

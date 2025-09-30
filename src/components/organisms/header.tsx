@@ -93,7 +93,7 @@ const Header = (props: IProps) => {
       ];
     }
 
-    if (userRole === "ADMIN") {
+    if (userRole === "admin") {
       return [
         ...baseItems,
         {
