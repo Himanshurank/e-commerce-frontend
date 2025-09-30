@@ -21,12 +21,12 @@ export class ConfigService implements IConfigService {
     this.config = {
       // API Configuration
       lancerAPI: this.getEnvVar(
-        "NEXT_PUBLIC_API_URL",
-        "http://localhost:5000/api"
+        "NEXT_PUBLIC_API_BASE_URL",
+        "https://e-commerce-backend-4na4.onrender.com/api"
       ),
       internalLancerAPI: this.getEnvVar(
-        "INTERNAL_API_URL",
-        "http://localhost:5000/api"
+        "NEXT_PUBLIC_API_BASE_URL",
+        "https://e-commerce-backend-4na4.onrender.com/api"
       ),
 
       // Database Configuration
